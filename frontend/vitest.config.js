@@ -1,0 +1,18 @@
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+
+export default defineConfig({
+  plugins: [react()],
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: './tests/setup.js',
+    css: true,
+    include: ['tests/**/*.test.{js,jsx}'],
+  },
+  resolve: {
+    alias: {
+      '@': '/src',
+    },
+  },
+});
