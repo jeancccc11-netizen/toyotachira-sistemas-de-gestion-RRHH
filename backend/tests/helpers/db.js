@@ -26,4 +26,8 @@ const getAuthHeader = () => ({
   Authorization: `Bearer ${generateToken()}`,
 });
 
-module.exports = { generateToken, seedTestData, cleanupTestUser, getAuthHeader };
+let cachedEmpId = null;
+const getTestEmpleadoId = () => cachedEmpId;
+const setTestEmpleadoId = (id) => { cachedEmpId = id; };
+
+module.exports = { generateToken, seedTestData, cleanupTestUser, getAuthHeader, getTestEmpleadoId, setTestEmpleadoId };

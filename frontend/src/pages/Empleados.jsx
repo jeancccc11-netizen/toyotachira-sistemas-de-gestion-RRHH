@@ -5,12 +5,22 @@ import api from '../api/client';
 import PageHeader from '../components/ui/PageHeader';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 import Badge from '../components/ui/Badge';
+import Pagination from '../components/ui/Pagination';
+import ConfirmDialog from '../components/ui/ConfirmDialog';
+import useRole from '../hooks/useRole';
+import useConfirm from '../hooks/useConfirm';
+import usePagination from '../hooks/usePagination';
+import { useToast } from '../context/ToastContext';
 
 export default function Empleados() {
   const [empleados, setEmpleados] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [estado, setEstado] = useState('');
+  const { canWrite, canDelete } = useRole();
+  const toast = useToast();
+  const { confirm, state: cState, handleConfirm, handleCancel } = useConfirm();
+  const { page, totalPages, items, goTo, reset } = usePagination(empleados);
 
   const load = async () => {
     setLoading(true);
@@ -20,21 +30,25 @@ export default function Empleados() {
       if (estado) params.estado_operativo = estado;
       const res = await api.get('/empleados', { params });
       setEmpleados(res.data);
-    } catch (err) { console.error(err); }
+    } catch (err) { toast.error('Error al cargar empleados'); }
     finally { setLoading(false); }
   };
   useEffect(() => { load(); }, [search, estado]);
+  useEffect(() => { reset(); }, [search, estado]);
 
   const handleDelete = async (id, nombre) => {
-    if (!confirm(`¿Eliminar a ${nombre}?`)) return;
-    try { await api.delete(`/empleados/${id}`); load(); }
-    catch (err) { alert(err.response?.data?.error || 'Error'); }
+    const ok = await confirm(`¿Eliminar a ${nombre}?`);
+    if (!ok) return;
+    try { await api.delete(`/empleados/${id}`); toast.success('Empleado eliminado'); load(); }
+    catch (err) { toast.error(err.response?.data?.error || 'Error'); }
   };
 
   return (
     <div>
-      <PageHeader title="Empleados"
-        action={<Link to="/empleados/new" className="flex items-center gap-2 bg-primary-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-primary-700"><Plus size={16} /> Nuevo Empleado</Link>} />
+      {cState.show && <ConfirmDialog message={cState.message} onConfirm={handleConfirm} onCancel={handleCancel} />}
+      <PageHeader title="Empleados" action={canWrite && (
+        <Link to="/empleados/new" className="flex items-center gap-2 bg-primary-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-primary-700"><Plus size={16} /> Nuevo Empleado</Link>
+      )} />
       <div className="flex gap-3 mb-4">
         <div className="relative flex-1 max-w-md">
           <Search size={16} className="absolute left-3 top-2.5 text-gray-400" />
@@ -45,12 +59,12 @@ export default function Empleados() {
           <option>Activo</option><option>Vacaciones</option><option>Reposo</option><option>Egreso</option>
         </select>
       </div>
-      {loading ? <LoadingSpinner /> : empleados.length === 0 ? <p className="text-gray-500">No se encontraron empleados</p> : (
+      {loading ? <LoadingSpinner /> : items.length === 0 ? <p className="text-gray-500">No se encontraron empleados</p> : (
         <div className="bg-white rounded-xl shadow overflow-hidden">
           <table className="w-full text-sm">
             <thead className="bg-gray-50 text-left"><tr><th className="px-4 py-3">N°</th><th>Nombre</th><th>Cédula</th><th>Depto.</th><th>Cargo</th><th>Estado</th><th className="text-right">Acciones</th></tr></thead>
             <tbody className="divide-y divide-gray-100">
-              {empleados.map((emp) => (
+              {items.map((emp) => (
                 <tr key={emp.id} className="hover:bg-gray-50">
                   <td className="px-4 py-3"><Link to={`/empleados/${emp.id}`} className="text-primary-600 hover:underline font-medium">{emp.nro}</Link></td>
                   <td className="font-medium">{emp.nombre_completo}</td>
@@ -59,13 +73,14 @@ export default function Empleados() {
                   <td className="text-gray-500">{emp.posicion_cargo}</td>
                   <td><Badge value={emp.estado_operativo} /></td>
                   <td className="text-right flex items-center justify-end gap-2">
-                    <Link to={`/empleados/${emp.id}/edit`} className="p-1.5 bg-blue-100 text-blue-600 rounded-lg hover:bg-blue-200"><Pencil size={14} /></Link>
-                    <button onClick={() => handleDelete(emp.id, emp.nombre_completo)} className="p-1.5 bg-red-100 text-red-600 rounded-lg hover:bg-red-200"><Trash2 size={14} /></button>
+                    {canWrite && <Link to={`/empleados/${emp.id}/edit`} className="p-1.5 bg-blue-100 text-blue-600 rounded-lg hover:bg-blue-200"><Pencil size={14} /></Link>}
+                    {canDelete && <button onClick={() => handleDelete(emp.id, emp.nombre_completo)} className="p-1.5 bg-red-100 text-red-600 rounded-lg hover:bg-red-200"><Trash2 size={14} /></button>}
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
+          <Pagination page={page} totalPages={totalPages} onPageChange={goTo} />
         </div>
       )}
     </div>

@@ -22,14 +22,14 @@ const documentosController = {
   upload: async (req, res, next) => {
     try {
       if (!req.file) return res.status(400).json({ error: 'Archivo requerido' });
-      const { empleado_id, tipo_documento, carpeta, observaciones } = req.body;
+      const { empleado_id, tipo_documento, observaciones } = req.body;
       if (!empleado_id || !tipo_documento) {
         return res.status(400).json({ error: 'empleado_id y tipo_documento requeridos' });
       }
       const result = await Documento.create({
         empleado_id: parseInt(empleado_id), tipo_documento,
         nombre_archivo: req.file.originalname, ruta_archivo: req.file.path,
-        carpeta, observaciones,
+        observaciones,
       });
       res.status(201).json(result.rows[0]);
     } catch (err) { next(err); }

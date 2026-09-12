@@ -14,14 +14,17 @@ const navItems = [
   { to: '/nomina', icon: FileText, label: 'Nómina' },
 ];
 
+const roleColors = {
+  admin: 'bg-red-100 text-red-700',
+  operador: 'bg-blue-100 text-blue-700',
+  consulta: 'bg-gray-100 text-gray-600',
+};
+
 export default function Layout() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
-  };
+  const handleLogout = () => { logout(); navigate('/login'); };
 
   return (
     <div className="flex h-screen">
@@ -30,7 +33,6 @@ export default function Layout() {
           <h1 className="text-lg font-bold">SI-GHR</h1>
           <p className="text-xs text-gray-400">Toyotachira S.A.</p>
         </div>
-
         <nav className="flex-1 p-3 space-y-1 overflow-auto">
           {navItems.map(({ to, icon: Icon, label }) => (
             <NavLink key={to} to={to} end={to === '/'}
@@ -39,26 +41,24 @@ export default function Layout() {
                   isActive ? 'bg-primary-600 text-white' : 'text-gray-300 hover:bg-gray-800'
                 }`
               }>
-              <Icon size={18} />
-              {label}
+              <Icon size={18} />{label}
             </NavLink>
           ))}
         </nav>
-
         <div className="p-3 border-t border-gray-700">
-          <p className="text-xs text-gray-400 mb-2 truncate">{user?.username} ({user?.rol})</p>
+          <div className="flex items-center gap-2 mb-2">
+            <p className="text-xs text-gray-400 truncate">{user?.username}</p>
+            <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-medium ${roleColors[user?.rol] || roleColors.consulta}`}>
+              {user?.rol}
+            </span>
+          </div>
           <button onClick={handleLogout}
             className="flex items-center gap-2 text-sm text-gray-300 hover:text-red-400 w-full">
             <LogOut size={16} /> Salir
           </button>
         </div>
       </aside>
-
-      <main className="flex-1 overflow-auto">
-        <div className="p-6">
-          <Outlet />
-        </div>
-      </main>
+      <main className="flex-1 overflow-auto"><div className="p-6"><Outlet /></div></main>
     </div>
   );
 }

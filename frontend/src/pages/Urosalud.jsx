@@ -4,6 +4,12 @@ import api from '../api/client';
 import PageHeader from '../components/ui/PageHeader';
 import Modal from '../components/ui/Modal';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
+import Pagination from '../components/ui/Pagination';
+import ConfirmDialog from '../components/ui/ConfirmDialog';
+import useRole from '../hooks/useRole';
+import useConfirm from '../hooks/useConfirm';
+import usePagination from '../hooks/usePagination';
+import { useToast } from '../context/ToastContext';
 
 export default function Urosalud() {
   const [polizas, setPolizas] = useState([]);
@@ -17,6 +23,10 @@ export default function Urosalud() {
   const [form, setForm] = useState({ empleado_id: '', numero_poliza: '', fecha_afiliacion: '', plan_contratado: '', monto_prima: '', asesor: '', moneda: 'Bs', estado: 'Activa' });
   const [cargaForm, setCargaForm] = useState({ nombre_completo: '', parentesco: 'Cónyuge', sexo: 'F' });
   const [error, setError] = useState('');
+  const { canWrite, canDelete } = useRole();
+  const toast = useToast();
+  const { confirm, state: cState, handleConfirm, handleCancel } = useConfirm();
+  const { page, totalPages, items, goTo } = usePagination(polizas);
   const setF = (k) => (e) => setForm({ ...form, [k]: e.target.value });
 
   const load = async () => {
@@ -25,15 +35,15 @@ export default function Urosalud() {
   };
   useEffect(() => { load(); }, []);
   const openCargas = async (p) => { setSel(p); const res = await api.get(`/urosalud/cargas/${p.id}`); setCargas(res.data); };
-  const handleCreate = async (e) => { e.preventDefault(); setError(''); await api.post('/urosalud/polizas', { ...form, empleado_id: parseInt(form.empleado_id), monto_prima: parseFloat(form.monto_prima) }); setShowForm(false); load(); };
-  const handleCarga = async (e) => { e.preventDefault(); await api.post('/urosalud/cargas', { ...cargaForm, poliza_id: sel.id }); setShowCarga(false); const res = await api.get(`/urosalud/cargas/${sel.id}`); setCargas(res.data); };
-  const handleDeleteCarga = async (id) => { if (!confirm('¿Eliminar?')) return; await api.delete(`/urosalud/cargas/${id}`); const res = await api.get(`/urosalud/cargas/${sel.id}`); setCargas(res.data); };
+  const handleCreate = async (e) => { e.preventDefault(); setError(''); try { await api.post('/urosalud/polizas', { ...form, empleado_id: parseInt(form.empleado_id), monto_prima: parseFloat(form.monto_prima) }); toast.success('Póliza creada'); setShowForm(false); load(); } catch (err) { toast.error(err.response?.data?.error || 'Error'); } };
+  const handleCarga = async (e) => { e.preventDefault(); try { await api.post('/urosalud/cargas', { ...cargaForm, poliza_id: sel.id }); toast.success('Carga agregada'); setShowCarga(false); const res = await api.get(`/urosalud/cargas/${sel.id}`); setCargas(res.data); } catch (err) { toast.error(err.response?.data?.error || 'Error'); } };
+  const handleDeleteCarga = async (id) => { const ok = await confirm('¿Eliminar carga?'); if (!ok) return; try { await api.delete(`/urosalud/cargas/${id}`); toast.success('Carga eliminada'); const res = await api.get(`/urosalud/cargas/${sel.id}`); setCargas(res.data); } catch (err) { toast.error(err.response?.data?.error || 'Error'); } };
 
   if (loading) return <LoadingSpinner />;
-
   return (
     <div>
-      <PageHeader title="Seguro Urosalud" action={<button onClick={() => setShowForm(true)} className="flex items-center gap-2 bg-primary-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-primary-700"><Plus size={16} /> Nueva Póliza</button>} />
+      {cState.show && <ConfirmDialog message={cState.message} onConfirm={handleConfirm} onCancel={handleCancel} />}
+      <PageHeader title="Seguro Urosalud" action={canWrite && <button onClick={() => setShowForm(true)} className="flex items-center gap-2 bg-primary-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-primary-700"><Plus size={16} /> Nueva Póliza</button>} />
       {showForm && (
         <form onSubmit={handleCreate} className="bg-white rounded-xl shadow p-4 mb-6">
           {error && <div className="bg-red-50 text-red-600 text-sm p-2 rounded mb-3">{error}</div>}
@@ -59,13 +69,14 @@ export default function Urosalud() {
         <table className="w-full text-sm">
           <thead className="bg-gray-50 text-left"><tr><th className="px-4 py-3">Empleado</th><th>Póliza</th><th>Plan</th><th>Prima</th><th>Cargas</th><th></th></tr></thead>
           <tbody className="divide-y divide-gray-100">
-            {polizas.map((p) => <tr key={p.id} className="hover:bg-gray-50"><td className="px-4 py-3 font-medium">{p.nombre_completo}</td><td className="text-gray-500">{p.numero_poliza || '—'}</td><td>{p.plan_contratado}</td><td>{parseFloat(p.monto_prima).toFixed(2)} {p.moneda}</td><td className="text-center">{p.total_cargas}</td><td className="text-right"><button onClick={() => openCargas(p)} className="p-1.5 bg-blue-100 text-blue-600 rounded-lg"><Users size={14} /></button></td></tr>)}
+            {items.map((p) => <tr key={p.id} className="hover:bg-gray-50"><td className="px-4 py-3 font-medium">{p.nombre_completo}</td><td className="text-gray-500">{p.numero_poliza || '—'}</td><td>{p.plan_contratado}</td><td>{parseFloat(p.monto_prima).toFixed(2)} {p.moneda}</td><td className="text-center">{p.total_cargas}</td><td className="text-right"><button onClick={() => openCargas(p)} className="p-1.5 bg-blue-100 text-blue-600 rounded-lg"><Users size={14} /></button></td></tr>)}
           </tbody>
         </table>
+        <Pagination page={page} totalPages={totalPages} onPageChange={goTo} />
       </div>
       {sel && (
         <Modal title={`Cargas - ${sel.nombre_completo}`} onClose={() => setSel(null)}>
-          <button onClick={() => setShowCarga(true)} className="mb-3 text-sm text-primary-600 hover:underline flex items-center gap-1"><Plus size={14} /> Agregar</button>
+          {canWrite && <button onClick={() => setShowCarga(true)} className="mb-3 text-sm text-primary-600 hover:underline flex items-center gap-1"><Plus size={14} /> Agregar</button>}
           {showCarga && (
             <form onSubmit={handleCarga} className="bg-gray-50 rounded-lg p-3 mb-3 flex gap-2">
               <input placeholder="Nombre" value={cargaForm.nombre_completo} onChange={(e) => setCargaForm({ ...cargaForm, nombre_completo: e.target.value })} required className="border rounded-lg px-3 py-2 text-sm flex-1" />
@@ -76,7 +87,7 @@ export default function Urosalud() {
           <table className="w-full text-sm">
             <thead><tr className="text-left text-gray-500"><th className="py-2">Nombre</th><th>Parentesco</th><th></th></tr></thead>
             <tbody className="divide-y divide-gray-100">
-              {cargas.map((c) => <tr key={c.id}><td className="py-2">{c.nombre_completo}</td><td>{c.parentesco}</td><td className="text-right"><button onClick={() => handleDeleteCarga(c.id)} className="text-red-500 text-xs">Eliminar</button></td></tr>)}
+              {cargas.map((c) => <tr key={c.id}><td className="py-2">{c.nombre_completo}</td><td>{c.parentesco}</td><td className="text-right">{canDelete && <button onClick={() => handleDeleteCarga(c.id)} className="text-red-500 text-xs">Eliminar</button>}</td></tr>)}
             </tbody>
           </table>
         </Modal>

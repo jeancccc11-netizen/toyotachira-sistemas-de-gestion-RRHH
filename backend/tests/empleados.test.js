@@ -1,6 +1,6 @@
 const request = require('supertest');
 const app = require('./helpers/app');
-const { getAuthHeader } = require('./helpers/db');
+const { getAuthHeader, setTestEmpleadoId } = require('./helpers/db');
 
 const H = getAuthHeader();
 let cid = null;
@@ -38,6 +38,7 @@ describe('POST /api/empleados', () => {
     });
     expect(res.status).toBe(201);
     cid = res.body.id;
+    setTestEmpleadoId(cid);
   });
   it('debe rechazar campos requeridos', async () => {
     const res = await request(app).post('/api/empleados').set(H).send({ nombre_completo: 'X' });

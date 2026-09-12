@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { BrowserRouter, MemoryRouter } from 'react-router-dom';
-import { vi, describe, it, expect } from 'vitest';
+import { MemoryRouter } from 'react-router-dom';
+import { vi, describe, it, expect, beforeEach } from 'vitest';
 import Layout from '../src/components/Layout';
 import { AuthProvider } from '../src/context/AuthContext';
+import { ToastProvider } from '../src/context/ToastContext';
 
 vi.mock('../src/api/client', () => ({
   default: { get: vi.fn().mockResolvedValue({ data: {} }) },
@@ -12,9 +12,11 @@ vi.mock('../src/api/client', () => ({
 const renderLayout = (initialRoute = '/') => {
   return render(
     <MemoryRouter initialEntries={[initialRoute]}>
-      <AuthProvider>
-        <Layout />
-      </AuthProvider>
+      <ToastProvider>
+        <AuthProvider>
+          <Layout />
+        </AuthProvider>
+      </ToastProvider>
     </MemoryRouter>
   );
 };
@@ -44,7 +46,8 @@ describe('Layout Component', () => {
 
   it('muestra el usuario logueado', () => {
     renderLayout();
-    expect(screen.getByText(/admin/)).toBeInTheDocument();
+    const admins = screen.getAllByText(/admin/i);
+    expect(admins.length).toBeGreaterThanOrEqual(1);
   });
 
   it('muestra el botón de salir', () => {

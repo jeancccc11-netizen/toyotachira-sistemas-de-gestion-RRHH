@@ -1,9 +1,9 @@
 import { render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import Empleados from '../src/pages/Empleados';
 import { AuthProvider } from '../src/context/AuthContext';
+import { ToastProvider } from '../src/context/ToastContext';
 
 const mockEmpleados = [
   { id: 1, nro: 1, nombre_completo: 'Carlos Méndez', cedula: 'V-20.123.456', departamento: 'Ventas', posicion_cargo: 'Vendedor', estado_operativo: 'Activo' },
@@ -23,9 +23,11 @@ vi.mock('../src/api/client', () => ({
 const renderEmpleados = () => {
   return render(
     <BrowserRouter>
-      <AuthProvider>
-        <Empleados />
-      </AuthProvider>
+      <ToastProvider>
+        <AuthProvider>
+          <Empleados />
+        </AuthProvider>
+      </ToastProvider>
     </BrowserRouter>
   );
 };
@@ -33,16 +35,17 @@ const renderEmpleados = () => {
 describe('Empleados Component', () => {
   beforeEach(() => {
     localStorage.setItem('token', 'fake-jwt-token');
+    localStorage.setItem('user', JSON.stringify({ id: 1, username: 'admin', rol: 'admin' }));
   });
 
   it('renderiza el título de la página', async () => {
     renderEmpleados();
-    expect(screen.getByText('Empleados')).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText('Empleados')).toBeInTheDocument());
   });
 
-  it('muestra el botón de nuevo empleado', () => {
+  it('muestra el botón de nuevo empleado', async () => {
     renderEmpleados();
-    expect(screen.getByText(/nuevo empleado/i)).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText(/nuevo empleado/i)).toBeInTheDocument());
   });
 
   it('carga y muestra la lista de empleados', async () => {
@@ -53,13 +56,13 @@ describe('Empleados Component', () => {
     });
   });
 
-  it('muestra el campo de búsqueda', () => {
+  it('muestra el campo de búsqueda', async () => {
     renderEmpleados();
-    expect(screen.getByPlaceholderText(/buscar por nombre/i)).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByPlaceholderText(/buscar por nombre/i)).toBeInTheDocument());
   });
 
-  it('muestra el filtro de estados', () => {
+  it('muestra el filtro de estados', async () => {
     renderEmpleados();
-    expect(screen.getByDisplayValue(/todos/i)).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByDisplayValue(/todos/i)).toBeInTheDocument());
   });
 });

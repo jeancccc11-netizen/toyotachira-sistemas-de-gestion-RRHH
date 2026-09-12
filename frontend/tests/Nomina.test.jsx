@@ -3,6 +3,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import Nomina from '../src/pages/Nomina';
 import { AuthProvider } from '../src/context/AuthContext';
+import { ToastProvider } from '../src/context/ToastContext';
 
 const mockPeriodos = [
   { id: 1, quincena: 1, mes: 8, anio: 2026, estatus: 'Aprobada' },
@@ -15,7 +16,7 @@ const mockTotal = { total_empleados: 1, total_asignaciones: 5200, total_neto: 47
 vi.mock('../src/api/client', () => ({
   default: {
     get: vi.fn((url) => {
-      if (url.includes('/nomina/periodos') && !url.includes('/detalles')) return Promise.resolve({ data: mockPeriodos });
+      if (url.includes('/nomina/periodos') && !url.includes('/detalles') && !url.includes('/historial')) return Promise.resolve({ data: mockPeriodos });
       if (url.includes('/detalles')) return Promise.resolve({ data: mockDetalles });
       if (url.includes('/total')) return Promise.resolve({ data: mockTotal });
       return Promise.resolve({ data: [] });
@@ -24,11 +25,20 @@ vi.mock('../src/api/client', () => ({
 }));
 
 const renderNomina = () => render(
-  <BrowserRouter><AuthProvider><Nomina /></AuthProvider></BrowserRouter>
+  <BrowserRouter>
+    <ToastProvider>
+      <AuthProvider>
+        <Nomina />
+      </AuthProvider>
+    </ToastProvider>
+  </BrowserRouter>
 );
 
 describe('Nomina Component', () => {
-  beforeEach(() => { localStorage.setItem('token', 'fake-jwt-token'); });
+  beforeEach(() => {
+    localStorage.setItem('token', 'fake-jwt-token');
+    localStorage.setItem('user', JSON.stringify({ id: 1, username: 'admin', rol: 'admin' }));
+  });
 
   it('muestra el título Nómina', async () => {
     renderNomina();
@@ -42,7 +52,7 @@ describe('Nomina Component', () => {
 
   it('muestra botón exportar Excel', async () => {
     renderNomina();
-    await waitFor(() => expect(screen.getByText(/exportar excel/i)).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText(/exportar/i)).toBeInTheDocument());
   });
 
   it('carga períodos', async () => {

@@ -9,6 +9,8 @@ import DetalleForm from '../components/nomina/DetalleForm';
 import DetalleTable from '../components/nomina/DetalleTable';
 import ImportarForm from '../components/nomina/ImportarForm';
 import HistorialPeriodo from '../components/nomina/HistorialPeriodo';
+import useRole from '../hooks/useRole';
+import { useToast } from '../context/ToastContext';
 import downloadFile from '../utils/download';
 
 const fmt = (v) => parseFloat(v || 0).toFixed(2);
@@ -32,6 +34,8 @@ export default function Nomina() {
   const [periodoForm, setPeriodoForm] = useState(pf);
   const [detalleForm, setDetalleForm] = useState(emptyDetalle);
   const [error, setError] = useState('');
+  const { canWrite } = useRole();
+  const toast = useToast();
   const toggle = (k) => setShow((s) => ({ ...s, [k]: !s[k] }));
 
   const load = async () => {
@@ -52,7 +56,7 @@ export default function Nomina() {
     try {
       const body = { ...periodoForm, quincena: +periodoForm.quincena, mes: +periodoForm.mes, anio: +periodoForm.anio };
       const res = await api.post('/nomina/periodos', body);
-      setShow((s) => ({ ...s, periodo: false })); await load(); setSelected(res.data);
+      toast.success('Período creado'); setShow((s) => ({ ...s, periodo: false })); await load(); setSelected(res.data);
     } catch (err) { setError(err.response?.data?.error || 'Error'); }
   };
   const openDetalle = (d = null) => { setEditing(d); setDetalleForm(d ? { ...d } : emptyDetalle); setShow((s) => ({ ...s, detalle: true })); };
@@ -62,18 +66,17 @@ export default function Nomina() {
       const body = {};
       for (const [k, v] of Object.entries(detalleForm)) body[k] = k === 'empleado_id' ? parseInt(v) : parseFloat(v || 0);
       await api.put(`/nomina/${selected.id}/detalles`, body);
-      setShow((s) => ({ ...s, detalle: false })); setEditing(null); loadDet(selected);
+      toast.success('Detalle guardado'); setShow((s) => ({ ...s, detalle: false })); setEditing(null); loadDet(selected);
     } catch (err) { setError(err.response?.data?.error || 'Error'); }
   };
 
   if (loading) return <LoadingSpinner />;
-
   return (
     <div>
       <PageHeader title="Nómina" action={<div className="flex gap-2">
-        <button onClick={() => toggle('periodo')} className="flex items-center gap-2 bg-primary-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-primary-700"><Plus size={16} /> Nuevo Período</button>
-        {selected && <button onClick={() => toggle('import')} className="flex items-center gap-2 bg-amber-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-amber-700"><Table size={16} /> Importar</button>}
-        {selected && <button onClick={() => downloadFile(`/api/nomina/${selected.id}/export/excel`, `nomina-${selected.id}.xlsx`)} className="flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-green-700"><Table size={16} /> Exportar Excel</button>}
+        {canWrite && <button onClick={() => toggle('periodo')} className="flex items-center gap-2 bg-primary-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-primary-700"><Plus size={16} /> Nuevo Período</button>}
+        {canWrite && selected && <button onClick={() => toggle('import')} className="flex items-center gap-2 bg-amber-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-amber-700"><Table size={16} /> Importar</button>}
+        {selected && <button onClick={() => downloadFile(`/api/nomina/${selected.id}/export/excel`, `nomina-${selected.id}.xlsx`)} className="flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-green-700"><Table size={16} /> Exportar</button>}
         <button onClick={() => toggle('historial')} className="flex items-center gap-2 bg-gray-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-gray-700"><History size={16} /> Historial</button>
       </div>} />
       {show.periodo && <PeriodoForm form={periodoForm} setForm={setPeriodoForm} error={error} onSubmit={createPeriodo} onClose={() => toggle('periodo')} />}
@@ -89,10 +92,9 @@ export default function Nomina() {
       <div className="bg-white rounded-xl shadow overflow-hidden">
         <div className="px-4 py-3 border-b flex items-center justify-between">
           <h2 className="font-semibold text-sm">Detalles ({detalles.length})</h2>
-          {selected && <button onClick={() => openDetalle()} className="flex items-center gap-1 text-sm text-primary-600 hover:underline"><Plus size={14} /> Agregar Empleado</button>}
+          {canWrite && selected && <button onClick={() => openDetalle()} className="flex items-center gap-1 text-sm text-primary-600 hover:underline"><Plus size={14} /> Agregar Empleado</button>}
         </div>
-        <DetalleTable detalles={detalles} periodoId={selected?.id} onEdit={openDetalle} />
-      </div>
+        <DetalleTable detalles={detalles} periodoId={selected?.id} onEdit={openDetalle} /></div>
     </div>
   );
 }

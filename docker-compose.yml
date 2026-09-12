@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: sighr-db
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./database/sighr_schema.sql:/docker-entrypoint-initdb.d/01_schema.sql
+      - ./database/02_usuarios_auth.sql:/docker-entrypoint-initdb.d/02_auth.sql
+      - ./database/03_add_carpeta_column.sql:/docker-entrypoint-initdb.d/03_carpeta.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: sighr-backend
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/postgres
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: postgres
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      JWT_SECRET: sighr-secret-key-change-in-production
+      JWT_EXPIRES_IN: 8h
+      PORT: 3001
+      UPLOAD_DIR: ./uploads
+    ports:
+      - "3001:3001"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - uploads:/app/uploads
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: sighr-frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
+  uploads:

@@ -14,10 +14,10 @@ const Documento = {
   create: (data) =>
     query(
       `INSERT INTO documentos_empleado
-        (empleado_id, tipo_documento, nombre_archivo, ruta_archivo, carpeta, observaciones)
-       VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
+        (empleado_id, tipo_documento, nombre_archivo, ruta_archivo, observaciones)
+       VALUES ($1, $2, $3, $4, $5) RETURNING *`,
       [data.empleado_id, data.tipo_documento, data.nombre_archivo,
-       data.ruta_archivo, data.carpeta || null, data.observaciones]
+       data.ruta_archivo, data.observaciones]
     ),
 
   delete: (id) =>
