@@ -3,6 +3,11 @@ const { authMiddleware } = require('../middleware/auth');
 const periodo = require('../controllers/nomina.periodo.controller');
 const detalle = require('../controllers/nomina.detalle.controller');
 const exp = require('../controllers/nomina.export.controller');
+const imp = require('../controllers/nomina.import.controller');
+const hist = require('../controllers/nomina.historial.controller');
+const multer = require('multer');
+
+const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 10 * 1024 * 1024 } });
 
 const router = Router();
 router.use(authMiddleware);
@@ -24,7 +29,12 @@ router.delete('/:nominaId/detalles/:detalleId', detalle.remove);
 router.get('/:nominaId/resumen-departamento', detalle.resumenDepartamento);
 router.get('/:nominaId/total', detalle.total);
 
-// Export
+// Historial
+router.get('/historial/todos', hist.periodosHistorial);
+router.get('/historial/:id', hist.periodoDetalle);
+
+// Import/Export
+router.post('/:nominaId/import', upload.single('archivo'), imp.importExcel);
 router.get('/:id/recibo/:detalleId/pdf', exp.pdf);
 router.get('/:id/export/excel', exp.excel);
 

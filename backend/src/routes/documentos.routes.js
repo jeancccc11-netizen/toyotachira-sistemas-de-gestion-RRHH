@@ -31,9 +31,12 @@ const router = Router();
 router.use(authMiddleware);
 
 router.get('/empleado/:empleadoId', ctrl.listByEmpleado);
+router.get('/folders/:empleadoId', ctrl.folders);
+router.get('/folder/:empleadoId/:carpeta', ctrl.byFolder);
 router.get('/stats', ctrl.stats);
 router.post('/upload', upload.single('archivo'), ctrl.upload);
 router.get('/:id/download', ctrl.download);
+router.put('/:id/folder', ctrl.updateFolder);
 router.delete('/:id', ctrl.delete);
 
 module.exports = router;

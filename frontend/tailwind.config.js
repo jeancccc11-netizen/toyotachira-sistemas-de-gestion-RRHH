@@ -4,9 +4,40 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: { 50: '#eff6ff', 100: '#dbeafe', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8' },
-        success: { 500: '#22c55e', 600: '#16a34a' },
-        danger: { 500: '#ef4444', 600: '#dc2626' },
+        // Corporate navy palette - sobrio y profesional
+        primary: {
+          50: '#f0f4f8',
+          100: '#d9e2ec',
+          200: '#bcccdc',
+          300: '#9fb3c8',
+          400: '#829ab1',
+          500: '#627d98',
+          600: '#486581',
+          700: '#334e68',
+          800: '#243b53',
+          900: '#102a43',
+        },
+        // Success: verde apagado
+        success: {
+          50: '#f0fdf4',
+          100: '#dcfce7',
+          500: '#2d6a4f',
+          600: '#1b4332',
+        },
+        // Danger: rojo sobrio
+        danger: {
+          50: '#fef2f2',
+          100: '#fee2e2',
+          500: '#b91c1c',
+          600: '#991b1b',
+        },
+        // Warning: ámbar corporativo
+        warning: {
+          50: '#fffbeb',
+          100: '#fef3c7',
+          500: '#b45309',
+          600: '#92400e',
+        },
       },
     },
   },
