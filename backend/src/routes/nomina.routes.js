@@ -35,7 +35,7 @@ router.get('/historial/:id', hist.periodoDetalle);
 
 // Import/Export
 router.post('/:nominaId/import', upload.single('archivo'), imp.importExcel);
-router.get('/:id/recibo/:detalleId/pdf', exp.pdf);
-router.get('/:id/export/excel', exp.excel);
+router.get('/:nominaId/recibo/:detalleId/pdf', exp.pdf);
+router.get('/:nominaId/export/excel', exp.excel);
 
 module.exports = router;
