@@ -1,6 +1,6 @@
-import Badge from '../ui/Badge';
+import EstatusBadge from './EstatusBadge';
 
-export default function PeriodoSelector({ periodos, selected, onSelect }) {
+export default function PeriodoSelector({ periodos, selected, onSelect, onRefresh }) {
   return (
     <div className="flex gap-3 mb-6 overflow-x-auto pb-2">
       {periodos.map((p) => (
@@ -11,7 +11,9 @@ export default function PeriodoSelector({ periodos, selected, onSelect }) {
               : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
           }`}>
           {p.quincena}° Q · {p.mes}/{p.anio}
-          <span className="ml-2"><Badge value={p.estatus} /></span>
+          <span className="ml-2">
+            <EstatusBadge periodo={p} onUpdated={onRefresh} />
+          </span>
         </button>
       ))}
     </div>

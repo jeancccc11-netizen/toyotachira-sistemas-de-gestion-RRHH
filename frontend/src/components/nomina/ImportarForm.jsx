@@ -24,9 +24,7 @@ export default function ImportarForm({ nominaId, onDone }) {
     try {
       const fd = new FormData();
       fd.append('archivo', file);
-      const res = await api.post(`/nomina/${nominaId}/import`, fd, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
+      const res = await api.post(`/nomina/${nominaId}/import`, fd);
       setResult(res.data);
       if (onDone) onDone();
     } catch (err) {

@@ -1,26 +1,22 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Pencil } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import api from '../api/client';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
-import InfoTab from '../components/empleado/InfoTab';
+import ProfileCard from '../components/empleado/ProfileCard';
+import PerfilTab from '../components/empleado/PerfilTab';
+import PhotoTab from '../components/empleado/PhotoTab';
 import DocsTab from '../components/empleado/DocsTab';
 import ExamenesTab from '../components/empleado/ExamenesTab';
-import PhotoTab from '../components/empleado/PhotoTab';
 
-const tabs = [
-  ['foto', 'Foto Perfil'],
-  ['info', 'Información'],
-  ['docs', 'Documentos'],
-  ['examenes', 'Exámenes'],
-];
+const tabs = [['perfil', 'Perfil'], ['foto', 'Foto'], ['docs', 'Documentos'], ['examenes', 'Exámenes']];
 
 export default function EmpleadoDetail() {
   const { id } = useParams();
   const [empleado, setEmpleado] = useState(null);
   const [docs, setDocs] = useState([]);
   const [examenes, setExamenes] = useState([]);
-  const [tab, setTab] = useState('foto');
+  const [tab, setTab] = useState('perfil');
   const [loading, setLoading] = useState(true);
 
   const load = async () => {
@@ -39,29 +35,28 @@ export default function EmpleadoDetail() {
 
   return (
     <div>
-      <Link to="/empleados"
-        className="flex items-center gap-1 text-sm text-gray-500 hover:text-primary-600 mb-4">
+      <Link to="/empleados" className="flex items-center gap-1 text-sm text-gray-500 hover:text-primary-600 mb-4">
         <ArrowLeft size={16} /> Volver
       </Link>
-      <div className="flex items-center justify-between mb-4">
-        <h1 className="text-2xl font-bold">{empleado.nombre_completo}</h1>
-        <Link to={`/empleados/${id}/edit`}
-          className="flex items-center gap-1 px-3 py-1.5 bg-blue-100 text-blue-600 rounded-lg text-sm hover:bg-blue-200">
-          <Pencil size={14} /> Editar
-        </Link>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-1">
+          <ProfileCard emp={{ ...empleado, id }} docs={docs} onTabChange={setTab} />
+        </div>
+        <div className="lg:col-span-2">
+          <div className="flex gap-2 mb-4">
+            {tabs.map(([k, l]) => (
+              <button key={k} onClick={() => setTab(k)}
+                className={`px-4 py-2 rounded-lg text-sm font-medium ${
+                  tab === k ? 'bg-primary-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}>{l}</button>
+            ))}
+          </div>
+          {tab === 'perfil' && <PerfilTab emp={empleado} />}
+          {tab === 'foto' && <PhotoTab empleado={empleado} onRefresh={load} />}
+          {tab === 'docs' && <DocsTab docs={docs} empleadoId={id} onRefresh={load} />}
+          {tab === 'examenes' && <ExamenesTab examenes={examenes} empleadoId={id} onRefresh={load} />}
+        </div>
       </div>
-      <div className="flex gap-2 mb-4">
-        {tabs.map(([k, l]) => (
-          <button key={k} onClick={() => setTab(k)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium ${
-              tab === k ? 'bg-primary-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-            }`}>{l}</button>
-        ))}
-      </div>
-      {tab === 'foto' && <PhotoTab empleado={empleado} onRefresh={load} />}
-      {tab === 'info' && <InfoTab empleado={empleado} />}
-      {tab === 'docs' && <DocsTab docs={docs} empleadoId={id} onRefresh={load} />}
-      {tab === 'examenes' && <ExamenesTab examenes={examenes} empleadoId={id} onRefresh={load} />}
     </div>
   );
 }

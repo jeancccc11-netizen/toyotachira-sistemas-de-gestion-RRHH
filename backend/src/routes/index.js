@@ -9,6 +9,7 @@ const examenesRoutes = require('./examenes.routes');
 const vacacionesRoutes = require('./vacaciones.routes');
 const urosaludRoutes = require('./urosalud.routes');
 const nominaRoutes = require('./nomina.routes');
+const usuariosRoutes = require('./usuarios.routes');
 
 const router = Router();
 
@@ -20,6 +21,7 @@ router.use('/examenes', examenesRoutes);
 router.use('/vacaciones', vacacionesRoutes);
 router.use('/urosalud', urosaludRoutes);
 router.use('/nomina', nominaRoutes);
+router.use('/usuarios', usuariosRoutes);
 
 // Dashboard stats
 router.get('/dashboard', authMiddleware, async (req, res, next) => {

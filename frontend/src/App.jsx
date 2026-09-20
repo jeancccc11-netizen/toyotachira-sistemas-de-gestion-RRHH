@@ -12,6 +12,7 @@ import Examenes from './pages/Examenes';
 import Vacaciones from './pages/Vacaciones';
 import Urosalud from './pages/Urosalud';
 import Nomina from './pages/Nomina';
+import Usuarios from './pages/Usuarios';
 
 function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
@@ -35,6 +36,7 @@ export default function App() {
           <Route path="vacaciones" element={<Vacaciones />} />
           <Route path="urosalud" element={<Urosalud />} />
           <Route path="nomina" element={<Nomina />} />
+          <Route path="usuarios" element={<Usuarios />} />
         </Route>
       </Routes>
     </ToastProvider>

@@ -82,7 +82,7 @@ export default function Nomina() {
       {show.periodo && <PeriodoForm form={periodoForm} setForm={setPeriodoForm} error={error} onSubmit={createPeriodo} onClose={() => toggle('periodo')} />}
       {show.import && selected && <ImportarForm nominaId={selected.id} onDone={() => { loadDet(selected); toggle('import'); }} />}
       {show.historial && <HistorialPeriodo onSelect={(p) => { const per = periodos.find((x) => x.id === p.id); if (per) setSelected(per); toggle('historial'); }} />}
-      <PeriodoSelector periodos={periodos} selected={selected} onSelect={setSelected} />
+      <PeriodoSelector periodos={periodos} selected={selected} onSelect={setSelected} onRefresh={load} />
       {show.detalle && <DetalleForm form={detalleForm} setForm={setDetalleForm} empleados={empleados} editing={editing} error={error} onSubmit={saveDetalle} onClose={() => { toggle('detalle'); setEditing(null); }} />}
       {total && <div className="grid grid-cols-3 gap-4 mb-6">
         <div className="bg-white rounded-xl shadow p-4 text-center"><p className="text-xs text-gray-500">Empleados</p><p className="text-2xl font-bold">{total.total_empleados}</p></div>
