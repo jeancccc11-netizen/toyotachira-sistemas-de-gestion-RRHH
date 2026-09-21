@@ -41,11 +41,25 @@ export default function Urosalud() {
   useEffect(() => { load(); }, []);
 
   const openCargas = async (p) => { setSel(p); const res = await api.get(`/urosalud/cargas/${p.id}`); setCargas(res.data); };
-  const openEdit = (p) => { setEdit(p); setForm({ ...p, fecha_afiliacion: p.fecha_afiliacion?.split('T')[0] || '' }); setShowForm(true); };
+  const openEdit = (p) => {
+    setEdit(p);
+    setForm({
+      empleado_id: p.empleado_id || '', numero_poliza: p.numero_poliza || '',
+      fecha_afiliacion: p.fecha_afiliacion?.split('T')[0] || '',
+      plan_contratado: p.plan_contratado || '',
+      monto_prima: p.monto_prima || '', asesor: p.asesor || '',
+      moneda: p.moneda || 'Bs', estado: p.estado || 'Activa',
+    });
+    setShowForm(true);
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const validFields = ['empleado_id', 'numero_poliza', 'fecha_afiliacion', 'plan_contratado', 'monto_prima', 'asesor', 'moneda', 'estado'];
     try {
-      const body = { ...form, empleado_id: parseInt(form.empleado_id), monto_prima: parseFloat(form.monto_prima) };
+      const body = {};
+      validFields.forEach(k => { if (form[k]) body[k] = form[k]; });
+      body.empleado_id = parseInt(body.empleado_id);
+      body.monto_prima = parseFloat(body.monto_prima);
       if (edit) { await api.put(`/urosalud/polizas/${edit.id}`, body); toast.success('Actualizada'); }
       else { await api.post('/urosalud/polizas', body); toast.success('Creada'); }
       setShowForm(false); setEdit(null); load();

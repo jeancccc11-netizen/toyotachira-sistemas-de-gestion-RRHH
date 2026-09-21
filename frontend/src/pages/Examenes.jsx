@@ -25,7 +25,7 @@ export default function Examenes() {
 
   const load = async () => {
     const [ex, r, e] = await Promise.all([
-      api.get('/examenes/reposos-activos'), api.get('/examenes/reposos-activos'),
+      api.get('/examenes'), api.get('/examenes/reposos-activos'),
       api.get('/empleados?limit=100')
     ]);
     setExamenes(ex.data); setReposos(r.data); setEmpleados(e.data); setLoading(false);

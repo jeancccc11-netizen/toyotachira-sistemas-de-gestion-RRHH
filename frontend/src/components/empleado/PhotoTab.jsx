@@ -12,9 +12,7 @@ export default function PhotoTab({ empleado, onRefresh }) {
     setUploading(true);
     const fd = new FormData();
     fd.append('foto', file);
-    await api.post(`/empleados/${empleado.id}/foto`, fd, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    });
+    await api.post(`/empleados/${empleado.id}/foto`, fd);
     setUploading(false);
     onRefresh();
   };

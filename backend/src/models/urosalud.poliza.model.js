@@ -45,10 +45,18 @@ const Poliza = {
   ),
 
   update: (id, data) => {
+    const allowed = [
+      'empleado_id', 'numero_poliza', 'fecha_afiliacion',
+      'fecha_vencimiento', 'asesor', 'plan_contratado',
+      'monto_prima', 'moneda', 'estado', 'observaciones',
+    ];
     const fields = []; const params = []; let i = 1;
-    for (const [k, v] of Object.entries(data)) {
-      if (v !== undefined) { fields.push(`${k} = $${i++}`); params.push(v); }
+    for (const k of allowed) {
+      if (data[k] !== undefined && data[k] !== null) {
+        fields.push(`${k} = $${i++}`); params.push(data[k]);
+      }
     }
+    if (fields.length === 0) return this.findById(id);
     params.push(id);
     return query(
       `UPDATE polizas_urosalud SET ${fields.join(', ')}, updated_at = NOW()

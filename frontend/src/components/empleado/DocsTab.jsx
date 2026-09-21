@@ -22,7 +22,7 @@ export default function DocsTab({ docs, empleadoId, onRefresh }) {
     const fd = new FormData();
     fd.append('archivo', file); fd.append('empleado_id', empleadoId);
     fd.append('tipo_documento', tipo); fd.append('carpeta', carpeta);
-    await api.post('/documentos/upload', fd, { headers: { 'Content-Type': 'multipart/form-data' } });
+    await api.post('/documentos/upload', fd);
     setShowUp(false); setFile(null); onRefresh();
   };
   const del = async (id) => { if (!confirm('¿Eliminar?')) return; await api.delete(`/documentos/${id}`); onRefresh(); };

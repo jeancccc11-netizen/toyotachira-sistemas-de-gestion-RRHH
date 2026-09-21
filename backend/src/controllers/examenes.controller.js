@@ -1,6 +1,14 @@
 const Examen = require('../models/examen.model');
 
 const examenesController = {
+  // GET /api/examenes
+  listAll: async (_req, res, next) => {
+    try {
+      const result = await Examen.findAll();
+      res.json(result.rows);
+    } catch (err) { next(err); }
+  },
+
   // GET /api/examenes/empleado/:empleadoId
   listByEmpleado: async (req, res, next) => {
     try {

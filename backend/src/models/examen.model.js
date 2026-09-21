@@ -1,33 +1,57 @@
 const { query } = require('../config/database');
 
+const ALLOWED = [
+  'empleado_id', 'tipo_registro', 'fecha_registro',
+  'fecha_inicio', 'fecha_fin', 'fecha_reintegro',
+  'diagnostico', 'observaciones', 'ruta_adjunto',
+  'medico_responsable',
+];
+
 const Examen = {
+  findAll: () =>
+    query(
+      `SELECT ex.*, e.nombre_completo, e.cedula,
+              d.nombre AS departamento
+       FROM examenes_medicos_reposos ex
+       JOIN empleados e ON ex.empleado_id = e.id
+       LEFT JOIN departamentos d
+         ON e.departamento_id = d.id
+       ORDER BY ex.fecha_registro DESC`
+    ),
+
   findByEmpleado: (empleadoId) =>
     query(
       `SELECT * FROM examenes_medicos_reposos
-       WHERE empleado_id = $1 ORDER BY fecha_registro DESC`,
+       WHERE empleado_id = $1
+       ORDER BY fecha_registro DESC`,
       [empleadoId]
     ),
 
   findById: (id) =>
-    query('SELECT * FROM examenes_medicos_reposos WHERE id = $1', [id]),
-
-  create: (data) =>
     query(
-      `INSERT INTO examenes_medicos_reposos
-        (empleado_id, tipo_registro, fecha_registro, fecha_inicio, fecha_fin,
-         fecha_reintegro, diagnostico, observaciones, ruta_adjunto, medico_responsable)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING *`,
-      [data.empleado_id, data.tipo_registro, data.fecha_registro || new Date(),
-       data.fecha_inicio, data.fecha_fin, data.fecha_reintegro,
-       data.diagnostico, data.observaciones, data.ruta_adjunto, data.medico_responsable]
+      'SELECT * FROM examenes_medicos_reposos WHERE id = $1',
+      [id]
     ),
+
+  create: (data) => {
+    const cols = ALLOWED.filter((k) => data[k] !== undefined);
+    const vals = cols.map((k) => data[k]);
+    const nums = cols.map((_, i) => `$${i + 1}`);
+    return query(
+      `INSERT INTO examenes_medicos_reposos (${cols.join(',')})
+       VALUES (${nums.join(',')}) RETURNING *`,
+      vals
+    );
+  },
 
   findRepososActivos: () =>
     query(
-      `SELECT ex.*, e.nombre_completo, e.cedula, d.nombre AS departamento
+      `SELECT ex.*, e.nombre_completo, e.cedula,
+              d.nombre AS departamento
        FROM examenes_medicos_reposos ex
        JOIN empleados e ON ex.empleado_id = e.id
-       JOIN departamentos d ON e.departamento_id = d.id
+       LEFT JOIN departamentos d
+         ON e.departamento_id = d.id
        WHERE ex.tipo_registro = 'Reposo Médico'
          AND ex.fecha_reintegro IS NULL
        ORDER BY ex.fecha_inicio DESC`
