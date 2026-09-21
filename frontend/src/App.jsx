@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
 import { ToastProvider } from './context/ToastContext';
+import ErrorBoundary from './components/ui/ErrorBoundary';
 import Layout from './components/Layout';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
@@ -22,6 +23,7 @@ function ProtectedRoute({ children }) {
 
 export default function App() {
   return (
+    <ErrorBoundary>
     <ToastProvider>
       <Routes>
         <Route path="/login" element={<Login />} />
@@ -40,5 +42,6 @@ export default function App() {
         </Route>
       </Routes>
     </ToastProvider>
+    </ErrorBoundary>
   );
 }

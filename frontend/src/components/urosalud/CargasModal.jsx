@@ -1,30 +1,35 @@
 import { useState } from 'react';
 import { Plus } from 'lucide-react';
 import Modal from '../ui/Modal';
+import api from '../../api/client';
 import useRole from '../../hooks/useRole';
 
 export default function CargasModal({ sel, cargas, setCargas, onClose }) {
+  if (!sel) return null;
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({
     nombre_completo: '', cedula_o_identificador: '',
     parentesco: 'Cónyuge', sexo: 'F', edad: ''
   });
   const { canWrite, canDelete } = useRole();
-  const api = require('../../api/client').default;
 
   const handleCreate = async (e) => {
     e.preventDefault();
-    await api.post('/urosalud/cargas', { ...form, poliza_id: sel.id });
-    const res = await api.get(`/urosalud/cargas/${sel.id}`);
-    setCargas(res.data); setShowForm(false);
-    setForm({ nombre_completo: '', cedula_o_identificador: '',
-      parentesco: 'Cónyuge', sexo: 'F', edad: '' });
+    try {
+      await api.post('/urosalud/cargas', { ...form, poliza_id: sel.id });
+      const res = await api.get(`/urosalud/cargas/${sel.id}`);
+      setCargas(res.data || []); setShowForm(false);
+      setForm({ nombre_completo: '', cedula_o_identificador: '',
+        parentesco: 'Cónyuge', sexo: 'F', edad: '' });
+    } catch (err) { console.error(err); }
   };
   const handleDelete = async (id) => {
     if (!window.confirm('¿Eliminar carga?')) return;
-    await api.delete(`/urosalud/cargas/${id}`);
-    const res = await api.get(`/urosalud/cargas/${sel.id}`);
-    setCargas(res.data);
+    try {
+      await api.delete(`/urosalud/cargas/${id}`);
+      const res = await api.get(`/urosalud/cargas/${sel.id}`);
+      setCargas(res.data || []);
+    } catch (err) { console.error(err); }
   };
 
   return (
