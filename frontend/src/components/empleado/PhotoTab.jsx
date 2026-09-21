@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { Camera } from 'lucide-react';
-import api from '../../api/client';
+import api, { directApi } from '../../api/client';
 
 export default function PhotoTab({ empleado, onRefresh }) {
   const [uploading, setUploading] = useState(false);
@@ -12,7 +12,7 @@ export default function PhotoTab({ empleado, onRefresh }) {
     setUploading(true);
     const fd = new FormData();
     fd.append('foto', file);
-    await api.post(`/empleados/${empleado.id}/foto`, fd);
+    await (directApi || api).post(`/empleados/${empleado.id}/foto`, fd);
     setUploading(false);
     onRefresh();
   };

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Upload, Trash2, FolderOpen } from 'lucide-react';
-import api from '../../api/client';
+import api, { directApi } from '../../api/client';
 
 const tipos = ['Cédula', 'RIF', 'Título', 'Contrato', 'Hoja de Vida', 'Certificado Médico', 'Otros'];
 const carpetas = ['Personal', 'Contrato', 'Médico', 'Académico', 'Financiero'];
@@ -22,7 +22,7 @@ export default function DocsTab({ docs, empleadoId, onRefresh }) {
     const fd = new FormData();
     fd.append('archivo', file); fd.append('empleado_id', empleadoId);
     fd.append('tipo_documento', tipo); fd.append('carpeta', carpeta);
-    await api.post('/documentos/upload', fd);
+    await (directApi || api).post('/documentos/upload', fd);
     setShowUp(false); setFile(null); onRefresh();
   };
   const del = async (id) => { if (!confirm('¿Eliminar?')) return; await api.delete(`/documentos/${id}`); onRefresh(); };

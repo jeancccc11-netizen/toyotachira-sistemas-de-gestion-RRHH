@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Upload, AlertCircle } from 'lucide-react';
-import api from '../../api/client';
+import api, { directApi } from '../../api/client';
 import ErrorAlert from '../ui/ErrorAlert';
 
 const expectedCols = [
@@ -24,7 +24,8 @@ export default function ImportarForm({ nominaId, onDone }) {
     try {
       const fd = new FormData();
       fd.append('archivo', file);
-      const res = await api.post(`/nomina/${nominaId}/import`, fd);
+      const uploadApi = directApi || api;
+      const res = await uploadApi.post(`/nomina/${nominaId}/import`, fd);
       setResult(res.data);
       if (onDone) onDone();
     } catch (err) {
