@@ -54,7 +54,9 @@ export default function CargasModal({ sel, cargas, setCargas, onClose }) {
             <select value={form.parentesco}
               onChange={(e) => setForm({ ...form, parentesco: e.target.value })}
               className="border rounded-lg px-3 py-2 text-sm">
-              <option>Cónyuge</option><option>Hijo/a</option>
+              {['Cónyuge', 'Hijo/a', 'Padre', 'Madre', 'Abuelo', 'Abuela', 'Tío', 'Tía', 'Primo/a', 'Suegro/a', 'Yerno/Nuera', 'Otro'].map((p) => (
+                <option key={p}>{p}</option>
+              ))}
             </select>
             <button type="submit"
               className="px-3 py-1 bg-primary-600 text-white rounded-lg text-sm">Guardar</button>
