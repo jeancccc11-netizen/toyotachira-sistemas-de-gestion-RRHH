@@ -4,6 +4,14 @@ import downloadFile from '../../utils/download';
 
 const esDate = (d) => d ? new Date(d).toLocaleDateString('es-VE') : '—';
 
+const download = async (id) => {
+  try {
+    await downloadFile(`/api/vacaciones/solicitudes/${id}/pdf`, `vacaciones-${id}.pdf`);
+  } catch (err) {
+    alert('Error al descargar: ' + err.message);
+  }
+};
+
 export default function HistorialTable({ items }) {
   return (
     <table className="w-full text-sm">
@@ -19,7 +27,7 @@ export default function HistorialTable({ items }) {
             <td className="text-center">{s.dias_solicitados}</td>
             <td><Badge value={s.estado} /></td>
             <td className="text-right">
-              <button onClick={() => downloadFile(`/api/vacaciones/solicitudes/${s.id}/pdf`, `vacaciones-${s.id}.pdf`)}
+              <button onClick={() => download(s.id)}
                 className="p-1.5 bg-green-100 text-green-600 rounded-lg">
                 <Download size={14} /></button>
             </td>

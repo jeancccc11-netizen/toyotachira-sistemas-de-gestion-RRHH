@@ -5,11 +5,11 @@ const vacacionesPdfController = {
   generatePdf: async (req, res, next) => {
     try {
       const result = await query(
-        `SELECT sv.*, e.nombre_completo, e.cedula, e.cargo,
-                d.nombre AS departamento
+        `SELECT sv.*, e.nombre_completo, e.cedula,
+                e.posicion_cargo, d.nombre AS departamento
          FROM solicitudes_vacaciones sv
          JOIN empleados e ON sv.empleado_id = e.id
-         JOIN departamentos d ON e.departamento_id = d.id
+         LEFT JOIN departamentos d ON e.departamento_id = d.id
          WHERE sv.id = $1`, [req.params.id]
       );
       if (!result.rows.length) {
@@ -34,7 +34,7 @@ const vacacionesPdfController = {
         ['Empleado', s.nombre_completo],
         ['Cédula', s.cedula],
         ['Departamento', s.departamento],
-        ['Cargo', s.cargo || 'N/A'],
+        ['Cargo', s.posicion_cargo || 'N/A'],
         ['Fecha Salida', new Date(s.fecha_salida).toLocaleDateString('es-VE')],
         ['Fecha Regreso', new Date(s.fecha_regreso).toLocaleDateString('es-VE')],
         ['Días Solicitados', `${s.dias_solicitados}`],

@@ -1,8 +1,9 @@
-const API_BASE = import.meta.env.VITE_API_URL || '/api';
+const RENDER_URL = 'https://toyotachira-sistemas-de-gestion-rrhh.onrender.com/api';
 
 export default async function downloadFile(url, filename) {
   const token = localStorage.getItem('token');
-  const fullUrl = url.startsWith('http') ? url : `${API_BASE}${url.replace(/^\/api/, '')}`;
+  const path = url.replace(/^\/api/, '');
+  const fullUrl = url.startsWith('http') ? url : `${RENDER_URL}${path}`;
   try {
     const res = await fetch(fullUrl, {
       headers: { Authorization: `Bearer ${token}` },
