@@ -43,10 +43,10 @@ export default function EmpleadoDetail() {
           <ProfileCard emp={{ ...empleado, id }} docs={docs} onTabChange={setTab} />
         </div>
         <div className="lg:col-span-2">
-          <div className="flex flex-wrap gap-2 mb-4">
+          <div className="grid grid-cols-4 gap-1.5 sm:flex sm:flex-wrap sm:gap-2 mb-4">
             {tabs.map(([k, l]) => (
               <button key={k} onClick={() => setTab(k)}
-                className={`px-4 py-2 rounded-lg text-sm font-medium ${
+                className={`px-2 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium text-center ${
                   tab === k ? 'bg-primary-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}>{l}</button>
             ))}

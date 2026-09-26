@@ -60,9 +60,9 @@ export default function Departamentos() {
             <input placeholder="Nombre" value={nombre} onChange={(e) => setNombre(e.target.value)} required className="border border-gray-300 rounded-lg px-3 py-2 text-sm" />
             <input placeholder="Descripción (opcional)" value={descripcion} onChange={(e) => setDescripcion(e.target.value)} className="border border-gray-300 rounded-lg px-3 py-2 text-sm" />
           </div>
-          <div className="flex gap-2 mt-3">
-            <button type="button" onClick={() => setShowForm(false)} className="px-3 py-1.5 text-sm border rounded-lg">Cancelar</button>
-            <button type="submit" className="px-3 py-1.5 text-sm bg-primary-600 text-white rounded-lg">{editing ? 'Actualizar' : 'Crear'}</button>
+          <div className="flex flex-col-reverse sm:flex-row gap-2 mt-3">
+            <button type="button" onClick={() => setShowForm(false)} className="w-full sm:w-auto px-3 py-2.5 sm:py-1.5 text-sm border rounded-lg">Cancelar</button>
+            <button type="submit" className="w-full sm:w-auto px-3 py-2.5 sm:py-1.5 text-sm bg-primary-600 text-white rounded-lg">{editing ? 'Actualizar' : 'Crear'}</button>
           </div>
         </form>
       )}

@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { Camera } from 'lucide-react';
 import api, { directApi } from '../../api/client';
+import AuthImg from '../ui/AuthImg';
 
 export default function PhotoTab({ empleado, onRefresh }) {
   const [uploading, setUploading] = useState(false);
@@ -18,11 +19,11 @@ export default function PhotoTab({ empleado, onRefresh }) {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow p-6">
-      <div className="flex items-center gap-6">
+    <div className="bg-white rounded-xl shadow p-4 sm:p-6">
+      <div className="flex flex-col sm:flex-row items-center sm:items-center gap-4 sm:gap-6 text-center sm:text-left">
         <div className="relative">
           {empleado.foto_url ? (
-            <img src={empleado.foto_url} alt="Foto"
+            <AuthImg src={empleado.foto_url} alt="Foto"
               className="w-32 h-32 rounded-full object-cover border-4 border-gray-200" />
           ) : (
             <div className="w-32 h-32 rounded-full bg-gray-100 flex items-center justify-center">

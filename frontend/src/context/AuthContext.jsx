@@ -24,7 +24,9 @@ export function AuthProvider({ children }) {
     return userData;
   };
 
-  const logout = () => {
+  const logout = async () => {
+    // Best-effort: revoca el token en el servidor y limpia sesión local
+    try { await api.post('/auth/logout'); } catch { /* el token local se elimina igual */ }
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     setUser(null);

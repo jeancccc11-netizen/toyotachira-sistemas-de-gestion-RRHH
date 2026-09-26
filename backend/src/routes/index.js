@@ -51,9 +51,14 @@ router.get('/dashboard', authMiddleware, async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
-// Health check
-router.get('/health', (req, res) => {
-  res.json({ status: 'ok', service: 'SI-GHR API', version: '1.0.0' });
+// Health check — verifica la conexión a la BD para orquestadores (Docker, Render)
+router.get('/health', async (req, res) => {
+  try {
+    await require('../config/database').query('SELECT 1');
+    res.json({ status: 'ok', service: 'SI-GHR API', version: '1.0.0', db: 'up' });
+  } catch (err) {
+    res.status(503).json({ status: 'degraded', service: 'SI-GHR API', db: 'down', error: err.message });
+  }
 });
 
 module.exports = router;

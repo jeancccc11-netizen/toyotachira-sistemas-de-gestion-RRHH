@@ -23,7 +23,7 @@ const authController = {
       await Usuario.updateLastAccess(user.id);
 
       const token = jwt.sign(
-        { id: user.id, username: user.username, rol: user.rol },
+        { id: user.id, username: user.username, rol: user.rol, jti: require('crypto').randomUUID() },
         env.jwtSecret,
         { expiresIn: env.jwtExpiresIn }
       );
@@ -32,6 +32,20 @@ const authController = {
         token,
         user: { id: user.id, username: user.username, rol: user.rol },
       });
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  // POST /api/auth/logout — revoca el token actual
+  logout: async (req, res, next) => {
+    try {
+      const decoded = jwt.verify(req.token, env.jwtSecret);
+      require('../config/tokenBlocklist').revoke(
+        decoded.jti || req.token,
+        decoded.exp || Math.floor(Date.now() / 1000) + 3600
+      );
+      res.json({ message: 'Sesión cerrada' });
     } catch (err) {
       next(err);
     }

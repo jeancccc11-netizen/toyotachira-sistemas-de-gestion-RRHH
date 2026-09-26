@@ -2,9 +2,59 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-gray-50 text-gray-900 antialiased;
+    /* Evita rebotes horizontales en móvil por cualquier elemento ancho */
+    overflow-x: hidden;
+  }
+
+  /* Los inputs de 16px evitan el auto-zoom de iOS Safari al enfocar */
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+
+  @media (min-width: 640px) {
+    input,
+    select,
+    textarea {
+      font-size: 0.875rem; /* 14px en desktop, como el resto de la UI */
+    }
+  }
+
+  /* Sin resaltado azul al tocar en móviles */
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Scrollbars discretos con el gris Toyota */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-400;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+}
+
 @layer components {
   /*
-   * Tablas responsive: en desktop (<640px no aplica) se ven como tabla normal.
+   * Tablas responsive: en desktop (>640px) se ven como tabla normal.
    * En móvil cada fila se convierte en una tarjeta con etiquetas data-label.
    * Uso: <table className="rwd ..."> + <td data-label="Columna">.
    */
@@ -28,10 +78,12 @@
     table.rwd tr {
       border: 1px solid #dedfdf;
       border-radius: 0.75rem;
-      padding: 0.5rem 0.875rem;
+      padding: 0.25rem 0.875rem 0.625rem;
       margin: 0.75rem 0;
       background: #fff;
       overflow: hidden;
+      /* Sombra suave consistente con el resto de tarjetas */
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
     }
 
     table.rwd td {
@@ -39,17 +91,23 @@
       align-items: center;
       justify-content: space-between;
       gap: 1rem;
-      padding: 0.4rem 0;
+      padding: 0.45rem 0;
       border: 0;
+      border-bottom: 1px dashed #edee;
       text-align: right;
       white-space: normal;
     }
 
-    /* Primera celda = título de la tarjeta, sin etiqueta */
+    table.rwd tr td:last-of-type {
+      border-bottom: 0;
+    }
+
+    /* Primera celda = título de la tarjeta, sin etiqueta ni separador */
     table.rwd td:first-child {
       font-weight: 600;
       justify-content: flex-start;
-      padding-top: 0.6rem;
+      padding: 0.65rem 0 0.5rem;
+      border-bottom: 0;
     }
 
     table.rwd td:first-child::before {
@@ -68,32 +126,9 @@
       display: none;
     }
   }
-}
 
-@layer base {
-  html {
-    -webkit-text-size-adjust: 100%;
-  }
-
-  body {
-    @apply bg-gray-50 text-gray-900 antialiased;
-  }
-
-  /* Scrollbars discretos con el gris Toyota */
-  ::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    @apply bg-gray-300 rounded-full;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    @apply bg-gray-400;
-  }
-
-  ::-webkit-scrollbar-track {
-    @apply bg-transparent;
+  /* Botones táctiles: altura mínima cómoda en pantallas chicas */
+  .btn-touch {
+    min-height: 44px;
   }
 }

@@ -70,11 +70,16 @@ export default {
       },
       animation: {
         'slide-in': 'slideIn .3s ease-out',
+        'slide-up': 'slideUp .25s ease-out',
       },
       keyframes: {
         slideIn: {
           '0%': { transform: 'translateX(120%)', opacity: '0' },
           '100%': { transform: 'translateX(0)', opacity: '1' },
+        },
+        slideUp: {
+          '0%': { transform: 'translateY(40px)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' },
         },
       },
     },

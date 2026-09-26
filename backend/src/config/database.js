@@ -1,4 +1,5 @@
 const { Pool } = require('pg');
+const dbSsl = require('./dbSsl');
 
 // Supabase pooler - keep connections minimal to avoid queuing
 const pool = new Pool({
@@ -12,6 +13,7 @@ const pool = new Pool({
   idleTimeoutMillis: 10000,   // Close idle connections quickly
   connectionTimeoutMillis: 10000,
   allowExitOnIdle: true,      // Let pool exit when all clients idle
+  ssl: dbSsl,
 });
 
 pool.on('error', (err) => {

@@ -22,13 +22,14 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-black">
-      <div className="w-full max-w-md px-4">
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary-600 mb-4">
-            <LogIn size={28} className="text-white" />
+    <div className="min-h-screen min-h-[100dvh] flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-black">
+      <div className="w-full max-w-md px-4 py-8">
+        <div className="text-center mb-6 sm:mb-8">
+          <div className="inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-primary-600 mb-3 sm:mb-4">
+            <LogIn size={26} className="text-white sm:hidden" />
+            <LogIn size={28} className="text-white hidden sm:block" />
           </div>
-          <h1 className="text-3xl font-bold text-white">SI-GHR</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-white">SI-GHR</h1>
           <p className="text-gray-400 text-sm mt-1">
             Sistema Integral de Gestión de Recursos Humanos
           </p>

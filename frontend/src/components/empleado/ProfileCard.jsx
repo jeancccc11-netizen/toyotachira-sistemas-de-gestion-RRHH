@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Pencil, Folder, FileText, Download } from 'lucide-react';
 import Badge from '../ui/Badge';
+import AuthImg from '../ui/AuthImg';
 import downloadFile from '../../utils/download';
 
 const esDate = (d) => d ? new Date(d).toLocaleDateString('es-VE') : '—';
@@ -11,7 +12,7 @@ export default function ProfileCard({ emp, docs, onTabChange }) {
     <div className="space-y-4">
       <div className="bg-white rounded-xl shadow p-6 text-center">
         <div className="w-28 h-28 mx-auto rounded-full bg-gray-200 mb-4 overflow-hidden flex items-center justify-center">
-          {fotoUrl ? <img src={fotoUrl} alt={emp.nombre_completo} className="w-full h-full object-cover" />
+          {fotoUrl ? <AuthImg src={fotoUrl} alt={emp.nombre_completo} className="w-full h-full object-cover" />
             : <span className="text-4xl text-gray-400">{emp.nombre_completo?.charAt(0)}</span>}
         </div>
         <h1 className="text-lg font-bold">{emp.nombre_completo}</h1>

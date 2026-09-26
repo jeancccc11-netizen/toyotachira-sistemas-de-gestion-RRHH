@@ -20,11 +20,11 @@ export default function UserForm({ empleados, form, setForm, onSubmit, onClose }
           {empleados.map((e) => <option key={e.id} value={e.id}>{e.nombre_completo}</option>)}
         </select>
       </div>
-      <div className="flex gap-2 mt-3">
+      <div className="flex flex-col-reverse sm:flex-row gap-2 mt-3">
         <button type="button" onClick={onClose}
-          className="px-3 py-1.5 text-sm border rounded-lg">Cancelar</button>
+          className="w-full sm:w-auto px-3 py-2.5 sm:py-1.5 text-sm border rounded-lg">Cancelar</button>
         <button type="submit"
-          className="px-3 py-1.5 text-sm bg-primary-600 text-white rounded-lg">Crear</button>
+          className="w-full sm:w-auto px-3 py-2.5 sm:py-1.5 text-sm bg-primary-600 text-white rounded-lg">Crear</button>
       </div>
     </form>
   );

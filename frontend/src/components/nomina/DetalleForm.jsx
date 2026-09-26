@@ -24,7 +24,7 @@ export default function DetalleForm({ form, setForm, empleados, editing, error, 
           </select>
         </div>
         <h4 className="text-sm font-semibold text-green-700 mb-2">📈 Asignaciones</h4>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
           <NumField label="Sueldo Base" value={form.sueldo_base} onChange={set('sueldo_base')} />
           <NumField label="Comisión" value={form.comision_mensual} onChange={set('comision_mensual')} />
           <NumField label="Bonificación" value={form.bonificacion} onChange={set('bonificacion')} />
@@ -33,7 +33,7 @@ export default function DetalleForm({ form, setForm, empleados, editing, error, 
           <NumField label="Extra" value={form.asignacion_extra} onChange={set('asignacion_extra')} />
         </div>
         <h4 className="text-sm font-semibold text-red-700 mb-2">📉 Deducciones</h4>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+        <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 mb-4">
           <NumField label="Seg. Social" value={form.deduccion_seguro_social} onChange={set('deduccion_seguro_social')} />
           <NumField label="PARO" value={form.deduccion_paro} onChange={set('deduccion_paro')} />
           <NumField label="INCES" value={form.deduccion_inces} onChange={set('deduccion_inces')} />
@@ -42,11 +42,11 @@ export default function DetalleForm({ form, setForm, empleados, editing, error, 
           <NumField label="Anticipos" value={form.deduccion_anticipos} onChange={set('deduccion_anticipos')} />
           <NumField label="Otros" value={form.deduccion_otros} onChange={set('deduccion_otros')} />
         </div>
-        <div className="flex gap-2 pt-3 border-t">
+        <div className="flex flex-col-reverse sm:flex-row gap-2 pt-3 border-t">
           <button type="button" onClick={onClose}
-            className="px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50">Cancelar</button>
+            className="w-full sm:w-auto px-4 py-2.5 sm:py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50">Cancelar</button>
           <button type="submit"
-            className="px-4 py-2 text-sm bg-primary-600 text-white rounded-lg hover:bg-primary-700">Guardar</button>
+            className="w-full sm:w-auto px-4 py-2.5 sm:py-2 text-sm bg-primary-600 text-white rounded-lg hover:bg-primary-700">Guardar</button>
         </div>
       </form>
     </Modal>

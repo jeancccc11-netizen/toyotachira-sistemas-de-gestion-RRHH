@@ -54,6 +54,31 @@ services:
     depends_on:
       - backend
 
+  # Backups diarios 02:00 UTC -> volumen pgbackups; restaurar con:
+  #   docker exec -i sighr-db psql -U postgres -d postgres < backups/<archivo>.sql.gz | gunzip
+  db-backup:
+    image: postgres:16-alpine
+    container_name: sighr-db-backup
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      PGPASSWORD: postgres
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        while true; do
+          sleep 86400;
+          ts=$$(date +%Y%m%d_%H%M%S);
+          pg_dump -h postgres -U postgres -d postgres | gzip > /backups/sighr_$$ts.sql.gz;
+          find /backups -name 'sighr_*.sql.gz' -mtime +14 -delete;
+          echo "[backup] sighr_$$ts.sql.gz creado";
+        done
+    volumes:
+      - pgbackups:/backups
+    restart: unless-stopped
+
 volumes:
   pgdata:
   uploads:
+  pgbackups:

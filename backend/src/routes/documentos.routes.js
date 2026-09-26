@@ -22,8 +22,9 @@ const upload = multer({
   fileFilter: (req, file, cb) => {
     const allowed = /pdf|jpg|jpeg|png|doc|docx/;
     const ext = allowed.test(path.extname(file.originalname).toLowerCase());
-    const mime = allowed.test(file.mimetype.split('/')[1]);
-    cb(null, ext || mime);
+    const mime = /pdf|jpeg|jpg|png|msword|wordprocessingml/.test(file.mimetype.split('/')[1]);
+    // Exige que BOTH extensión y MIME sean plausibles (evita doble extensión tipo .pdf.exe)
+    cb(null, ext && mime);
   },
 });
 

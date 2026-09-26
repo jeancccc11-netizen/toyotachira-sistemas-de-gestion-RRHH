@@ -14,7 +14,7 @@ export default function PerfilTab({ emp }) {
     ['Estado', emp.estado_operativo],
   ];
   return (
-    <div className="bg-white rounded-xl shadow p-6">
+    <div className="bg-white rounded-xl shadow p-4 sm:p-6">
       <h2 className="font-bold text-lg mb-4">Ficha del Empleado</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
         {fields.map(([label, val]) => (

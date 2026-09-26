@@ -47,14 +47,14 @@ export default function Empleados() {
     <div>
       {cState.show && <ConfirmDialog message={cState.message} onConfirm={handleConfirm} onCancel={handleCancel} />}
       <PageHeader title="Empleados" action={canWrite && (
-        <Link to="/empleados/new" className="flex items-center gap-2 bg-primary-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-primary-700"><Plus size={16} /> Nuevo Empleado</Link>
+        <Link to="/empleados/new" className="btn-touch flex items-center gap-2 bg-primary-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-primary-700"><Plus size={16} /> Nuevo Empleado</Link>
       )} />
-      <div className="flex flex-wrap items-center gap-3 mb-4">
-        <div className="relative flex-1 max-w-md">
-          <Search size={16} className="absolute left-3 top-2.5 text-gray-400" />
-          <input type="text" placeholder="Buscar por nombre, cédula o N°..." value={search} onChange={(e) => setSearch(e.target.value)} className="w-full border border-gray-300 rounded-lg pl-9 pr-3 py-2 text-sm" />
+      <div className="grid grid-cols-1 sm:flex sm:flex-wrap sm:items-center gap-3 mb-4">
+        <div className="relative sm:flex-1 sm:max-w-md">
+          <Search size={16} className="absolute left-3 top-3 text-gray-400" />
+          <input type="text" placeholder="Buscar por nombre, cédula o N°..." value={search} onChange={(e) => setSearch(e.target.value)} className="w-full border border-gray-300 rounded-lg pl-9 pr-3 py-2.5 sm:py-2 text-sm" />
         </div>
-        <select value={estado} onChange={(e) => setEstado(e.target.value)} className="w-full sm:w-auto border border-gray-300 rounded-lg px-3 py-2 text-sm">
+        <select value={estado} onChange={(e) => setEstado(e.target.value)} className="w-full sm:w-auto border border-gray-300 rounded-lg px-3 py-2.5 sm:py-2 text-sm">
           <option value="">Todos</option>
           <option>Activo</option><option>Vacaciones</option><option>Reposo</option><option>Egreso</option>
         </select>

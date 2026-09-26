@@ -42,24 +42,24 @@ export default function CargasModal({ sel, cargas, setCargas, onClose }) {
       )}
       {showForm && (
         <form onSubmit={handleCreate} className="bg-gray-50 rounded-lg p-3 mb-3 space-y-2">
-          <div className="flex flex-wrap gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <input placeholder="Nombre" value={form.nombre_completo} required
               onChange={(e) => setForm({ ...form, nombre_completo: e.target.value })}
-              className="border rounded-lg px-3 py-2 text-sm flex-1" />
+              className="border rounded-lg px-3 py-2 text-sm w-full" />
             <input placeholder="Cédula" value={form.cedula_o_identificador}
               onChange={(e) => setForm({ ...form, cedula_o_identificador: e.target.value })}
-              className="border rounded-lg px-3 py-2 text-sm flex-1" />
+              className="border rounded-lg px-3 py-2 text-sm w-full" />
           </div>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-col sm:flex-row gap-2">
             <select value={form.parentesco}
               onChange={(e) => setForm({ ...form, parentesco: e.target.value })}
-              className="border rounded-lg px-3 py-2 text-sm">
+              className="border rounded-lg px-3 py-2 text-sm sm:flex-1">
               {['Cónyuge', 'Hijo/a', 'Padre', 'Madre', 'Abuelo', 'Abuela', 'Tío', 'Tía', 'Primo/a', 'Suegro/a', 'Yerno/Nuera', 'Otro'].map((p) => (
                 <option key={p}>{p}</option>
               ))}
             </select>
             <button type="submit"
-              className="px-3 py-1 bg-primary-600 text-white rounded-lg text-sm">Guardar</button>
+              className="w-full sm:w-auto py-2 px-3 bg-primary-600 text-white rounded-lg text-sm">Guardar</button>
           </div>
         </form>
       )}

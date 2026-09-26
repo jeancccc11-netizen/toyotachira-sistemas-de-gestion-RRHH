@@ -1,8 +1,8 @@
 export default function PageHeader({ title, action }) {
   return (
-    <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
+    <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center sm:justify-between gap-3 mb-6">
       <h1 className="text-xl sm:text-2xl font-bold">{title}</h1>
-      {action}
+      {action && <div className="flex flex-wrap gap-2">{action}</div>}
     </div>
   );
 }

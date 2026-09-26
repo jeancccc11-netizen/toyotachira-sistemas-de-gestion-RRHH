@@ -68,3 +68,24 @@ describe('GET /api/auth/profile', () => {
     expect(res.status).toBe(401);
   });
 });
+
+describe('POST /api/auth/logout (revocación de token)', () => {
+  it('revoca el token y luego lo rechaza', async () => {
+    const login = await request(app)
+      .post('/api/auth/login')
+      .send({ username: 'admin', password: 'admin123' });
+    expect(login.status).toBe(200);
+    const token = login.body.token;
+
+    const out = await request(app)
+      .post('/api/auth/logout')
+      .set({ Authorization: `Bearer ${token}` });
+    expect(out.status).toBe(200);
+
+    // El mismo token ya no sirve para el perfil
+    const perfil = await request(app)
+      .get('/api/auth/profile')
+      .set({ Authorization: `Bearer ${token}` });
+    expect(perfil.status).toBe(401);
+  });
+});

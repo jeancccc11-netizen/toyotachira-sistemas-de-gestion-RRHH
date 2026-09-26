@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 const JWT_SECRET = process.env.JWT_SECRET || 'test-secret-key';
 
 const generateToken = (user = { id: 1, username: 'admin', rol: 'admin' }) => {
-  return jwt.sign(user, JWT_SECRET, { expiresIn: '1h' });
+  return jwt.sign({ ...user, jti: require('crypto').randomUUID() }, JWT_SECRET, { expiresIn: '1h' });
 };
 
 const seedTestData = async () => {

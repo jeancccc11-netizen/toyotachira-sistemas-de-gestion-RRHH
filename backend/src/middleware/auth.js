@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const env = require('../config/env');
+const blocklist = require('../config/tokenBlocklist');
 
 const authMiddleware = (req, res, next) => {
   const header = req.headers.authorization;
@@ -12,7 +13,11 @@ const authMiddleware = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, env.jwtSecret);
+    if (decoded.jti && blocklist.isRevoked(decoded.jti)) {
+      return res.status(401).json({ error: 'Sesión cerrada. Inicie sesión de nuevo.' });
+    }
     req.user = decoded;
+    req.token = token;
     next();
   } catch (err) {
     return res.status(401).json({ error: 'Token inválido o expirado' });

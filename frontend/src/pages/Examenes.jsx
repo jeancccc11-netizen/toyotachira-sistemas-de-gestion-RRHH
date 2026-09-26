@@ -53,7 +53,7 @@ export default function Examenes() {
     <div>
       {cs.show && <ConfirmDialog message={cs.message} onConfirm={handleConfirm} onCancel={handleCancel} />}
       <PageHeader title="Exámenes Médicos y Reposos" action={canWrite && (
-        <button onClick={() => setShowForm(!showForm)} className="flex items-center gap-2 bg-primary-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-primary-700">
+        <button onClick={() => setShowForm(!showForm)} className="btn-touch flex items-center gap-2 bg-primary-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-primary-700">
           <Plus size={16} /> Nuevo</button>
       )} />
       {reposos.length > 0 && (

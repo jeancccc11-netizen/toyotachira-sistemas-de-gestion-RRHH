@@ -19,12 +19,12 @@ export default function ExamenForm({ empleados, onSubmit, onClose }) {
     <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow p-4 mb-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <select value={form.empleado_id} onChange={setF('empleado_id')}
-          required className="border border-gray-300 rounded-lg px-3 py-2 text-sm">
+          required className="border border-gray-300 rounded-lg px-3 py-2.5 sm:py-2 text-sm">
           <option value="">Empleado...</option>
           {empleados.map((e) => <option key={e.id} value={e.id}>{e.nombre_completo}</option>)}
         </select>
         <select value={form.tipo_registro} onChange={setF('tipo_registro')}
-          className="border border-gray-300 rounded-lg px-3 py-2 text-sm">
+          className="border border-gray-300 rounded-lg px-3 py-2.5 sm:py-2 text-sm">
           {['Examen Ocupacional', 'Laboratorio', 'Reposo Médico', 'Control Periódico'].map((t) => (
             <option key={t}>{t}</option>
           ))}
@@ -45,11 +45,11 @@ export default function ExamenForm({ empleados, onSubmit, onClose }) {
           onChange={setF('medico_responsable')}
           className="border border-gray-300 rounded-lg px-3 py-2 text-sm" />
       </div>
-      <div className="flex gap-2 mt-3">
+      <div className="flex flex-col-reverse sm:flex-row gap-2 mt-3">
         <button type="button" onClick={onClose}
-          className="px-3 py-1.5 text-sm border rounded-lg">Cancelar</button>
+          className="w-full sm:w-auto px-3 py-2.5 sm:py-1.5 text-sm border rounded-lg">Cancelar</button>
         <button type="submit"
-          className="px-3 py-1.5 text-sm bg-primary-600 text-white rounded-lg">Crear</button>
+          className="w-full sm:w-auto px-3 py-2.5 sm:py-1.5 text-sm bg-primary-600 text-white rounded-lg">Crear</button>
       </div>
     </form>
   );

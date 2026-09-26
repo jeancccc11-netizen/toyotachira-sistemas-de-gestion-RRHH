@@ -39,14 +39,14 @@ export default function ImportarForm({ nominaId, onDone }) {
         <Upload size={16} /> Importar desde Excel
       </h3>
       <ErrorAlert message={error} />
-      <form onSubmit={handleImport} className="flex flex-wrap gap-3 items-end">
-        <div className="flex-1">
+      <form onSubmit={handleImport} className="flex flex-col sm:flex-row gap-3 sm:items-end">
+        <div className="flex-1 w-full">
           <input type="file" accept=".xlsx,.xls,.csv"
             onChange={(e) => setFile(e.target.files[0])}
             className="text-sm w-full" required />
         </div>
         <button type="submit" disabled={loading}
-          className="px-4 py-2 bg-primary-600 text-white rounded-lg text-sm
+          className="w-full sm:w-auto py-2.5 sm:py-2 bg-primary-600 text-white rounded-lg text-sm
           hover:bg-primary-700 disabled:opacity-50">
           {loading ? 'Importando...' : 'Importar'}
         </button>

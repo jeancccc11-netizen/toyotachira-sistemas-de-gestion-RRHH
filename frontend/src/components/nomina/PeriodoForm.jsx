@@ -53,11 +53,11 @@ export default function PeriodoForm({ form, setForm, error, onSubmit, onClose })
             </select>
           </div>
         </div>
-        <div className="flex gap-2 mt-4">
+        <div className="flex flex-col-reverse sm:flex-row gap-2 mt-4">
           <button type="button" onClick={onClose}
-            className="px-3 py-1.5 text-sm border border-gray-300 rounded-lg hover:bg-gray-50">Cancelar</button>
+            className="w-full sm:w-auto px-3 py-2.5 sm:py-1.5 text-sm border border-gray-300 rounded-lg hover:bg-gray-50">Cancelar</button>
           <button type="submit"
-            className="px-3 py-1.5 text-sm bg-primary-600 text-white rounded-lg hover:bg-primary-700">Crear Período</button>
+            className="w-full sm:w-auto px-3 py-2.5 sm:py-1.5 text-sm bg-primary-600 text-white rounded-lg hover:bg-primary-700">Crear Período</button>
         </div>
       </form>
     </Modal>

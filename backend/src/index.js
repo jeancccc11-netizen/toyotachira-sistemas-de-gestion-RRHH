@@ -1,20 +1,54 @@
 const express = require('express');
 const cors = require('cors');
+const helmet = require('helmet');
+const morgan = require('morgan');
+const { loginLimiter, apiLimiter } = require('./middleware/rateLimiters');
 const path = require('path');
 const env = require('./config/env');
 const { query, shutdown } = require('./config/database');
 const routes = require('./routes');
 const errorHandler = require('./middleware/errorHandler');
+const uploadsAuth = require('./middleware/uploadsAuth');
 
 const app = express();
 
-// Middleware
-app.use(cors());
+app.set('trust proxy', 1);
+
+// Seguridad HTTP
+app.use(
+  helmet({
+    crossoriginResourcePolicy: { policy: 'same-site' },
+  })
+);
+
+// CORS: lista blanca opcional vía CORS_ORIGINS. Sin lista, en dev se permite todo;
+// en producción se recomienda siempre definirla.
+app.use(
+  cors(
+    env.corsOrigins.length
+      ? {
+          origin(origin, cb) {
+            if (!origin || env.corsOrigins.includes(origin)) return cb(null, true);
+            cb(new Error('Origen no permitido por CORS'));
+          },
+        }
+      : {}
+  )
+);
+
+// Logging HTTP (se silencia en tests)
+if (env.nodeEnv !== 'test') {
+  app.use(morgan(env.isProd ? 'combined' : 'dev'));
+}
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Static files for uploads
-app.use('/uploads', express.static(path.resolve(env.uploadDir)));
+// Rate limit general de la API
+app.use('/api', apiLimiter);
+
+// Archivos subidos: SOLO con token válido
+app.use('/uploads', uploadsAuth(env));
 
 // API routes
 app.use('/api', routes);
@@ -49,6 +83,8 @@ const start = async () => {
   }
 };
 
-start();
+if (require.main === module) {
+  start();
+}
 
-module.exports = app;
+module.exports = { app, loginLimiter, start };

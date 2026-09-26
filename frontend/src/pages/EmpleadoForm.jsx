@@ -46,19 +46,19 @@ export default function EmpleadoForm() {
           <FormField label="N° Empleado" type="number" value={form.nro} onChange={set('nro')} required />
           <FormField label="Cédula" value={form.cedula} onChange={set('cedula')} required placeholder="V-XX.XXX.XXX" />
           <FormField label="Nombre Completo" value={form.nombre_completo} onChange={set('nombre_completo')} required className="sm:col-span-2" />
-          <div><label className="block text-sm font-medium text-gray-700 mb-1">Departamento</label><select value={form.departamento_id} onChange={set('departamento_id')} required className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"><option value="">Seleccionar...</option>{departamentos.map((d) => <option key={d.id} value={d.id}>{d.nombre}</option>)}</select></div>
+          <div><label className="block text-sm font-medium text-gray-700 mb-1">Departamento</label><select value={form.departamento_id} onChange={set('departamento_id')} required className="w-full border border-gray-300 rounded-lg px-3 py-2.5 sm:py-2 text-sm"><option value="">Seleccionar...</option>{departamentos.map((d) => <option key={d.id} value={d.id}>{d.nombre}</option>)}</select></div>
           <FormField label="Cargo" value={form.posicion_cargo} onChange={set('posicion_cargo')} />
           <FormField label="Fecha de Ingreso" type="date" value={form.fecha_ingreso} onChange={set('fecha_ingreso')} required />
           <FormField label="Salario Base (Bs)" type="number" step="0.01" value={form.salario_base} onChange={set('salario_base')} required />
-          <div><label className="block text-sm font-medium text-gray-700 mb-1">Estado</label><select value={form.estado_operativo} onChange={set('estado_operativo')} className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"><option>Activo</option><option>Vacaciones</option><option>Reposo</option><option>Egreso</option></select></div>
-          <div><label className="block text-sm font-medium text-gray-700 mb-1">Tipo Tasa</label><select value={form.tipo_tasa} onChange={set('tipo_tasa')} className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"><option>Bs</option><option>USD</option></select></div>
+          <div><label className="block text-sm font-medium text-gray-700 mb-1">Estado</label><select value={form.estado_operativo} onChange={set('estado_operativo')} className="w-full border border-gray-300 rounded-lg px-3 py-2.5 sm:py-2 text-sm"><option>Activo</option><option>Vacaciones</option><option>Reposo</option><option>Egreso</option></select></div>
+          <div><label className="block text-sm font-medium text-gray-700 mb-1">Tipo Tasa</label><select value={form.tipo_tasa} onChange={set('tipo_tasa')} className="w-full border border-gray-300 rounded-lg px-3 py-2.5 sm:py-2 text-sm"><option>Bs</option><option>USD</option></select></div>
           <FormField label="Email" type="email" value={form.email} onChange={set('email')} />
           <FormField label="Teléfono" value={form.telefono} onChange={set('telefono')} />
           <FormField label="Dirección" value={form.direccion} onChange={set('direccion')} className="sm:col-span-2" />
         </div>
-        <div className="flex gap-3 pt-4 border-t">
-          <button type="button" onClick={() => navigate('/empleados')} className="px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50">Cancelar</button>
-          <button type="submit" disabled={loading} className="flex items-center gap-2 bg-primary-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary-700 disabled:opacity-50"><Save size={16} /> {loading ? 'Guardando...' : isEdit ? 'Actualizar' : 'Crear'}</button>
+        <div className="flex flex-col-reverse sm:flex-row gap-3 pt-4 border-t">
+          <button type="button" onClick={() => navigate('/empleados')} className="w-full sm:w-auto px-4 py-2.5 sm:py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50">Cancelar</button>
+          <button type="submit" disabled={loading} className="w-full sm:w-auto flex items-center justify-center gap-2 bg-primary-600 text-white px-4 py-2.5 sm:py-2 rounded-lg text-sm font-medium hover:bg-primary-700 disabled:opacity-50"><Save size={16} /> {loading ? 'Guardando...' : isEdit ? 'Actualizar' : 'Crear'}</button>
         </div>
       </form>
     </div>

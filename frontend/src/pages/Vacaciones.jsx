@@ -57,9 +57,9 @@ export default function Vacaciones() {
     <div>
       {cs.show && <ConfirmDialog message={cs.message} onConfirm={handleConfirm} onCancel={handleCancel} />}
       <PageHeader title="Vacaciones" action={canWrite && <button onClick={() => setShowForm(!showForm)} className="flex items-center gap-2 bg-primary-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-primary-700"><Plus size={16} /> Nueva</button>} />
-      <div className="flex gap-2 mb-4">
+      <div className="grid grid-cols-2 gap-2 sm:flex sm:gap-2 mb-4">
         {[['pendientes', 'Pendientes'], ['historial', 'Historial']].map(([k, l]) => (
-          <button key={k} onClick={() => setTab(k)} className={`px-4 py-2 rounded-lg text-sm font-medium ${tab === k ? 'bg-primary-600 text-white' : 'bg-gray-100 text-gray-600'}`}>{l}</button>
+          <button key={k} onClick={() => setTab(k)} className={`py-2.5 sm:py-2 sm:px-4 rounded-lg text-sm font-medium ${tab === k ? 'bg-primary-600 text-white' : 'bg-gray-100 text-gray-600'}`}>{l}</button>
         ))}
       </div>
       {tab === 'historial' && (

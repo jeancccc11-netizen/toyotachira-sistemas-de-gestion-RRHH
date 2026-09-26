@@ -7,10 +7,17 @@ const pdf = require('../controllers/nomina.pdf.controller');
 const imp = require('../controllers/nomina.import.controller');
 const hist = require('../controllers/nomina.historial.controller');
 const multer = require('multer');
+const path = require('path');
 
 const upload = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 10 * 1024 * 1024 }
+  limits: { fileSize: 10 * 1024 * 1024 },
+  fileFilter: (_, file, cb) => {
+    const ok = /xlsx|xlsm|xls|csv/
+      .test(path.extname(file.originalname).toLowerCase())
+      || /spreadsheetml|ms-excel|csv/.test(file.mimetype);
+    cb(null, ok);
+  },
 });
 
 const router = Router();
