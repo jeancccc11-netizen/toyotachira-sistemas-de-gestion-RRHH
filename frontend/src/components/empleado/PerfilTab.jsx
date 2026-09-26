@@ -16,7 +16,7 @@ export default function PerfilTab({ emp }) {
   return (
     <div className="bg-white rounded-xl shadow p-6">
       <h2 className="font-bold text-lg mb-4">Ficha del Empleado</h2>
-      <div className="grid grid-cols-2 gap-4 text-sm">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
         {fields.map(([label, val]) => (
           <div key={label} className="border-b pb-2">
             <p className="text-xs text-gray-400">{label}</p>

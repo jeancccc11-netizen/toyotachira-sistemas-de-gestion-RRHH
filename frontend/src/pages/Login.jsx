@@ -22,17 +22,17 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-800 via-slate-700 to-slate-900">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-black">
       <div className="w-full max-w-md px-4">
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary-600 mb-4">
             <LogIn size={28} className="text-white" />
           </div>
           <h1 className="text-3xl font-bold text-white">SI-GHR</h1>
-          <p className="text-slate-400 text-sm mt-1">
+          <p className="text-gray-400 text-sm mt-1">
             Sistema Integral de Gestión de Recursos Humanos
           </p>
-          <p className="text-slate-500 text-xs mt-1">Toyotachira S.A.</p>
+          <p className="text-gray-500 text-xs mt-1">Toyotachira S.A.</p>
         </div>
 
         <div className="bg-white rounded-2xl shadow-2xl p-8">
@@ -73,7 +73,7 @@ export default function Login() {
           </form>
         </div>
 
-        <p className="text-center text-slate-500 text-xs mt-6">
+        <p className="text-center text-gray-500 text-xs mt-6">
           © 2026 Toyotachira S.A. — Todos los derechos reservados
         </p>
       </div>

@@ -60,29 +60,31 @@ export default function Examenes() {
         <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6">
           <h3 className="font-semibold text-sm text-amber-800 mb-2">⚠️ Reposos Activos ({reposos.length})</h3>
           {reposos.map((r) => (
-            <div key={r.id} className="flex items-center justify-between py-1">
-              <span className="text-sm">{r.nombre_completo} — desde {r.fecha_inicio}</span>
+            <div key={r.id} className="flex flex-wrap items-center justify-between gap-2 py-1">
+              <span className="text-sm">{r.nombre_completo} — desde {r.fecha_inicio?.split('T')[0]}</span>
               {canWrite && <button onClick={() => handleReintegro(r.id)} className="px-2 py-1 bg-green-100 text-green-700 rounded text-xs hover:bg-green-200">Reintegrar</button>}
             </div>
           ))}
         </div>
       )}
       {showForm && <ExamenForm empleados={empleados} onSubmit={handleCreate} onClose={() => setShowForm(false)} />}
-      <div className="bg-white rounded-xl shadow overflow-hidden">
+      <div className="bg-white rounded-xl shadow overflow-x-auto">
         <div className="px-4 py-3 border-b"><h2 className="font-semibold text-sm flex items-center gap-2"><Clipboard size={16} /> Registros ({examenes.length})</h2></div>
-        <table className="w-full text-sm">
+        <table className="w-full text-sm min-w-[720px] whitespace-nowrap rwd">
           <thead className="bg-gray-50 text-left"><tr><th className="px-4 py-3">Tipo</th><th>Empleado</th><th>Fecha</th><th>Diagnóstico</th><th>Estado</th><th></th></tr></thead>
           <tbody className="divide-y divide-gray-100">
             {pag.items.map((ex) => (
               <tr key={ex.id} className="hover:bg-gray-50">
                 <td className="px-4 py-3"><Badge value={ex.tipo_registro} /></td>
-                <td>{ex.nombre_completo}</td>
-                <td className="text-gray-500">{ex.fecha_registro?.split('T')[0]}</td>
-                <td className="text-gray-500">{ex.diagnostico || '—'}</td>
-                <td>{ex.fecha_reintegro ? <span className="text-green-600 text-xs">Reintegrado {ex.fecha_reintegro}</span> : <span className="text-amber-600 text-xs">Activo</span>}</td>
-                <td className="text-right flex gap-1 justify-end">
-                  {canWrite && !ex.fecha_reintegro && <button onClick={() => handleReintegro(ex.id)} className="px-2 py-1 bg-green-100 text-green-600 rounded text-xs">Reintegrar</button>}
-                  {canDelete && <button onClick={() => handleDelete(ex.id)} className="p-1 text-red-500"><Trash2 size={14} /></button>}
+                <td data-label="Empleado">{ex.nombre_completo}</td>
+                <td data-label="Fecha" className="text-gray-500">{ex.fecha_registro?.split('T')[0]}</td>
+                <td data-label="Diagnóstico" className="text-gray-500">{ex.diagnostico || '—'}</td>
+                <td data-label="Estado">{ex.fecha_reintegro ? <span className="text-green-600 text-xs">Reintegrado {ex.fecha_reintegro}</span> : <span className="text-amber-600 text-xs">Activo</span>}</td>
+                <td data-label="Acciones" className="text-right">
+                  <div className="flex gap-1 justify-end">
+                    {canWrite && !ex.fecha_reintegro && <button onClick={() => handleReintegro(ex.id)} className="px-2 py-1 bg-green-100 text-green-600 rounded text-xs">Reintegrar</button>}
+                    {canDelete && <button onClick={() => handleDelete(ex.id)} className="p-1 text-red-500"><Trash2 size={14} /></button>}
+                  </div>
                 </td>
               </tr>
             ))}

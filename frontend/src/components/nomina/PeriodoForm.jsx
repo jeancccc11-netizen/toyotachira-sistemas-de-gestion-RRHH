@@ -11,7 +11,7 @@ export default function PeriodoForm({ form, setForm, error, onSubmit, onClose })
     <Modal title="Nuevo Período de Nómina" onClose={onClose}>
       <ErrorAlert message={error} />
       <form onSubmit={onSubmit}>
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           <div>
             <label className="block text-xs text-gray-500 mb-1">Quincena</label>
             <select value={form.quincena} onChange={set('quincena')}

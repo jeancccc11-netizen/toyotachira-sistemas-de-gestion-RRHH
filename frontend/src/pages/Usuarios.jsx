@@ -45,9 +45,9 @@ export default function Usuarios() {
           <Plus size={16} /> Nuevo Usuario</button>
       } />
       {showForm && <UserForm empleados={empleados} form={form} setForm={setForm} onSubmit={handleCreate} onClose={() => setShowForm(false)} />}
-      <div className="bg-white rounded-xl shadow overflow-hidden">
+      <div className="bg-white rounded-xl shadow overflow-x-auto">
         <div className="px-4 py-3 border-b"><h2 className="font-semibold text-sm">Usuarios ({users.length})</h2></div>
-        <table className="w-full text-sm">
+        <table className="w-full text-sm min-w-[560px] whitespace-nowrap rwd">
           <thead className="bg-gray-50 text-left">
             <tr><th className="px-4 py-3">Usuario</th><th>Rol</th><th>Último Acceso</th><th>Estado</th></tr>
           </thead>
@@ -55,9 +55,9 @@ export default function Usuarios() {
             {users.map((u) => (
               <tr key={u.id} className="hover:bg-gray-50">
                 <td className="px-4 py-3 font-medium">{u.username}</td>
-                <td><Badge value={u.rol} /></td>
-                <td className="text-gray-500">{u.ultimo_acceso ? new Date(u.ultimo_acceso).toLocaleString('es-VE') : 'Nunca'}</td>
-                <td>{u.activo ? <span className="text-green-600 flex items-center gap-1"><UserCheck size={14} /> Activo</span> : <span className="text-red-600 flex items-center gap-1"><UserX size={14} /> Inactivo</span>}</td>
+                <td data-label="Rol"><Badge value={u.rol} /></td>
+                <td data-label="Último Acceso" className="text-gray-500">{u.ultimo_acceso ? new Date(u.ultimo_acceso).toLocaleString('es-VE') : 'Nunca'}</td>
+                <td data-label="Estado">{u.activo ? <span className="text-green-600 flex items-center gap-1"><UserCheck size={14} /> Activo</span> : <span className="text-red-600 flex items-center gap-1"><UserX size={14} /> Inactivo</span>}</td>
               </tr>
             ))}
           </tbody>

@@ -19,7 +19,7 @@ export default function ProfileCard({ emp, docs, onTabChange }) {
         <div className="mt-2"><Badge value={emp.estado_operativo || 'Activo'} /></div>
         <div className="flex gap-2 mt-4 justify-center">
           <Link to={`/empleados/${emp.id}/edit`}
-            className="flex items-center gap-1 px-3 py-1.5 bg-blue-100 text-blue-600 rounded-lg text-sm hover:bg-blue-200">
+            className="flex items-center gap-1 px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg text-sm hover:bg-gray-200">
             <Pencil size={14} /> Editar</Link>
         </div>
       </div>
@@ -41,7 +41,7 @@ export default function ProfileCard({ emp, docs, onTabChange }) {
       <div className="bg-white rounded-xl shadow p-4">
         <button onClick={() => onTabChange('docs')}
           className="flex items-center gap-2 w-full text-left text-sm hover:text-primary-600">
-          <Folder size={16} className="text-amber-500" />
+          <Folder size={16} className="text-primary-600" />
           <span>Expediente ({docs.length} docs)</span>
         </button>
         {docs.slice(0, 3).map((d) => (

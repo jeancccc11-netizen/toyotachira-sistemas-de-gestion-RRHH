@@ -2,6 +2,98 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  @apply bg-gray-50 text-gray-900;
+@layer components {
+  /*
+   * Tablas responsive: en desktop (<640px no aplica) se ven como tabla normal.
+   * En móvil cada fila se convierte en una tarjeta con etiquetas data-label.
+   * Uso: <table className="rwd ..."> + <td data-label="Columna">.
+   */
+  @media (max-width: 639.98px) {
+    table.rwd {
+      min-width: 0;
+    }
+
+    table.rwd thead {
+      display: none;
+    }
+
+    table.rwd,
+    table.rwd tbody,
+    table.rwd tr,
+    table.rwd td {
+      display: block;
+      width: 100%;
+    }
+
+    table.rwd tr {
+      border: 1px solid #dedfdf;
+      border-radius: 0.75rem;
+      padding: 0.5rem 0.875rem;
+      margin: 0.75rem 0;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    table.rwd td {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.4rem 0;
+      border: 0;
+      text-align: right;
+      white-space: normal;
+    }
+
+    /* Primera celda = título de la tarjeta, sin etiqueta */
+    table.rwd td:first-child {
+      font-weight: 600;
+      justify-content: flex-start;
+      padding-top: 0.6rem;
+    }
+
+    table.rwd td:first-child::before {
+      content: none;
+    }
+
+    table.rwd td::before {
+      content: attr(data-label);
+      font-weight: 600;
+      color: #58595b;
+      text-align: left;
+      flex-shrink: 0;
+    }
+
+    table.rwd td:empty {
+      display: none;
+    }
+  }
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-gray-50 text-gray-900 antialiased;
+  }
+
+  /* Scrollbars discretos con el gris Toyota */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-400;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
 }

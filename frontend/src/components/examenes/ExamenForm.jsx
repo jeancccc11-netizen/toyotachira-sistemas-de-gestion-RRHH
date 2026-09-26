@@ -17,7 +17,7 @@ export default function ExamenForm({ empleados, onSubmit, onClose }) {
 
   return (
     <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow p-4 mb-6">
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <select value={form.empleado_id} onChange={setF('empleado_id')}
           required className="border border-gray-300 rounded-lg px-3 py-2 text-sm">
           <option value="">Empleado...</option>

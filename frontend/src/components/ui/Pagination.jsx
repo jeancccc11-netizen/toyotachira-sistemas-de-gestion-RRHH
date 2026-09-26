@@ -9,11 +9,11 @@ export default function Pagination({ page, totalPages, onPageChange }) {
   for (let i = start; i <= end; i++) pages.push(i);
 
   return (
-    <div className="flex items-center justify-between px-4 py-3 border-t">
+    <div className="flex flex-wrap items-center justify-between gap-2 px-4 py-3 border-t">
       <span className="text-xs text-gray-500">
         Página {page} de {totalPages}
       </span>
-      <div className="flex gap-1">
+      <div className="flex flex-wrap gap-1">
         <button onClick={() => onPageChange(page - 1)} disabled={page <= 1}
           className="p-1.5 rounded-lg hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed">
           <ChevronLeft size={16} />

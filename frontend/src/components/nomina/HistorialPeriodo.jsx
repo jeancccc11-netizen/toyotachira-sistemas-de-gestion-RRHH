@@ -23,14 +23,14 @@ export default function HistorialPeriodo({ onSelect }) {
   if (loading) return <LoadingSpinner />;
 
   return (
-    <div className="bg-white rounded-xl shadow overflow-hidden">
+    <div className="bg-white rounded-xl shadow overflow-x-auto">
       <div className="px-4 py-3 border-b flex items-center gap-2">
         <History size={16} className="text-gray-500" />
         <h3 className="font-semibold text-sm">
           Historial de Nómina ({periodos.length})
         </h3>
       </div>
-      <table className="w-full text-sm">
+      <table className="w-full text-sm min-w-[640px] whitespace-nowrap rwd">
         <thead className="bg-gray-50 text-left">
           <tr>
             <th className="px-4 py-3">Período</th>
@@ -47,19 +47,20 @@ export default function HistorialPeriodo({ onSelect }) {
               <td className="px-4 py-3 font-medium">
                 {p.quincena}° Q — {mes(p.mes)} {p.anio}
               </td>
-              <td>{p.total_empleados || 0}</td>
-              <td className="font-semibold">
+              <td data-label="Empleados">{p.total_empleados || 0}</td>
+              <td data-label="Total Neto" className="font-semibold">
                 {fmt(p.total_neto)} Bs
               </td>
-              <td>
+              <td data-label="Estatus">
                 <span className={`px-2 py-0.5 rounded-full text-xs ${
                   p.estatus === 'Pagada' ? 'bg-green-100 text-green-700'
-                  : p.estatus === 'Aprobada' ? 'bg-blue-100 text-blue-700'
+                  : p.estatus === 'Aprobada' ? 'bg-green-100 text-green-700'
                   : p.estatus === 'Procesada' ? 'bg-yellow-100 text-yellow-700'
                   : 'bg-gray-100 text-gray-600'
                 }`}>{p.estatus}</span>
               </td>
-              <td className="text-right">
+              <td data-label="Excel" className="text-right">
+                <div className="flex justify-end">
                 <button onClick={(e) => {
                   e.stopPropagation();
                   downloadFile(`/api/nomina/${p.id}/export/excel`, `nomina-${p.id}.xlsx`);
@@ -67,6 +68,7 @@ export default function HistorialPeriodo({ onSelect }) {
                   hover:bg-green-200">
                   <Download size={14} />
                 </button>
+                </div>
               </td>
             </tr>
           ))}

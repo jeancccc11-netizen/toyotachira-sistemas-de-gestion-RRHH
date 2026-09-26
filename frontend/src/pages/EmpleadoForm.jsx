@@ -39,13 +39,13 @@ export default function EmpleadoForm() {
   return (
     <div className="max-w-2xl">
       <Link to="/empleados" className="flex items-center gap-1 text-sm text-gray-500 hover:text-primary-600 mb-4"><ArrowLeft size={16} /> Volver</Link>
-      <h1 className="text-2xl font-bold mb-6">{isEdit ? 'Editar Empleado' : 'Nuevo Empleado'}</h1>
+      <h1 className="text-xl sm:text-2xl font-bold mb-6">{isEdit ? 'Editar Empleado' : 'Nuevo Empleado'}</h1>
       <ErrorAlert message={error} />
       <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow p-6 space-y-4">
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <FormField label="N° Empleado" type="number" value={form.nro} onChange={set('nro')} required />
           <FormField label="Cédula" value={form.cedula} onChange={set('cedula')} required placeholder="V-XX.XXX.XXX" />
-          <FormField label="Nombre Completo" value={form.nombre_completo} onChange={set('nombre_completo')} required className="col-span-2" />
+          <FormField label="Nombre Completo" value={form.nombre_completo} onChange={set('nombre_completo')} required className="sm:col-span-2" />
           <div><label className="block text-sm font-medium text-gray-700 mb-1">Departamento</label><select value={form.departamento_id} onChange={set('departamento_id')} required className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"><option value="">Seleccionar...</option>{departamentos.map((d) => <option key={d.id} value={d.id}>{d.nombre}</option>)}</select></div>
           <FormField label="Cargo" value={form.posicion_cargo} onChange={set('posicion_cargo')} />
           <FormField label="Fecha de Ingreso" type="date" value={form.fecha_ingreso} onChange={set('fecha_ingreso')} required />
@@ -54,7 +54,7 @@ export default function EmpleadoForm() {
           <div><label className="block text-sm font-medium text-gray-700 mb-1">Tipo Tasa</label><select value={form.tipo_tasa} onChange={set('tipo_tasa')} className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"><option>Bs</option><option>USD</option></select></div>
           <FormField label="Email" type="email" value={form.email} onChange={set('email')} />
           <FormField label="Teléfono" value={form.telefono} onChange={set('telefono')} />
-          <FormField label="Dirección" value={form.direccion} onChange={set('direccion')} className="col-span-2" />
+          <FormField label="Dirección" value={form.direccion} onChange={set('direccion')} className="sm:col-span-2" />
         </div>
         <div className="flex gap-3 pt-4 border-t">
           <button type="button" onClick={() => navigate('/empleados')} className="px-4 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50">Cancelar</button>

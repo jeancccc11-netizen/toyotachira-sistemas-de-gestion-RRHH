@@ -42,7 +42,7 @@ export default function CargasModal({ sel, cargas, setCargas, onClose }) {
       )}
       {showForm && (
         <form onSubmit={handleCreate} className="bg-gray-50 rounded-lg p-3 mb-3 space-y-2">
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <input placeholder="Nombre" value={form.nombre_completo} required
               onChange={(e) => setForm({ ...form, nombre_completo: e.target.value })}
               className="border rounded-lg px-3 py-2 text-sm flex-1" />
@@ -50,7 +50,7 @@ export default function CargasModal({ sel, cargas, setCargas, onClose }) {
               onChange={(e) => setForm({ ...form, cedula_o_identificador: e.target.value })}
               className="border rounded-lg px-3 py-2 text-sm flex-1" />
           </div>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <select value={form.parentesco}
               onChange={(e) => setForm({ ...form, parentesco: e.target.value })}
               className="border rounded-lg px-3 py-2 text-sm">

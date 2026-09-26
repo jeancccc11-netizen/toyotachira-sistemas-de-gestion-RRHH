@@ -39,7 +39,7 @@ export default function ImportarForm({ nominaId, onDone }) {
         <Upload size={16} /> Importar desde Excel
       </h3>
       <ErrorAlert message={error} />
-      <form onSubmit={handleImport} className="flex gap-3 items-end">
+      <form onSubmit={handleImport} className="flex flex-wrap gap-3 items-end">
         <div className="flex-1">
           <input type="file" accept=".xlsx,.xls,.csv"
             onChange={(e) => setFile(e.target.files[0])}

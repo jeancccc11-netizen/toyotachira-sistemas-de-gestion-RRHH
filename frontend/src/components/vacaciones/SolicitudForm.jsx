@@ -2,7 +2,7 @@ export default function SolicitudForm({ empleados, form, setForm, error, onSubmi
   return (
     <form onSubmit={onSubmit} className="bg-white rounded-xl shadow p-4 mb-6">
       {error && <div className="bg-red-50 text-red-600 text-sm p-2 rounded mb-3">{error}</div>}
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <select value={form.empleado_id}
           onChange={(e) => setForm({ ...form, empleado_id: e.target.value })}
           required className="border border-gray-300 rounded-lg px-3 py-2 text-sm">

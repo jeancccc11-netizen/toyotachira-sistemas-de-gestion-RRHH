@@ -74,10 +74,10 @@ export default function Urosalud() {
       {cs.show && <ConfirmDialog message={cs.message} onConfirm={handleConfirm} onCancel={handleCancel} />}
       <PageHeader title="Seguro Urosalud" action={canWrite && <button onClick={() => { closeForm(); setShowForm(true); }} className="flex items-center gap-2 bg-primary-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-primary-700"><Plus size={16} /> Nueva Póliza</button>} />
       {showForm && <PolizaForm form={form} setF={setF} empleados={empleados} editPoliza={edit} onSubmit={handleSubmit} onClose={closeForm} />}
-      <div className="grid grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
         {resumen.map((r, i) => (<div key={i} className="bg-white rounded-xl shadow p-4"><div className="flex items-center gap-2 mb-2"><Shield size={16} className="text-primary-600" /><h3 className="font-medium text-sm">{r.plan_contratado}</h3></div><p className="text-2xl font-bold">{r.total}</p><p className="text-xs text-gray-500">{parseFloat(r.prima_total).toFixed(2)} Bs</p></div>))}
       </div>
-      <div className="bg-white rounded-xl shadow overflow-hidden">
+      <div className="bg-white rounded-xl shadow overflow-x-auto">
         <div className="px-4 py-3 border-b"><h2 className="font-semibold text-sm">Pólizas ({polizas.length})</h2></div>
         <PolizaTable items={pag.items} canWrite={canWrite} canDelete={canDelete} onCargas={openCargas} onEdit={openEdit} onDelete={handleDelete} />
         <Pagination page={pag.page} totalPages={pag.totalPages} onPageChange={pag.goTo} />

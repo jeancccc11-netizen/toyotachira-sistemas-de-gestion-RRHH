@@ -24,7 +24,7 @@ export default function DetalleForm({ form, setForm, empleados, editing, error, 
           </select>
         </div>
         <h4 className="text-sm font-semibold text-green-700 mb-2">📈 Asignaciones</h4>
-        <div className="grid grid-cols-3 gap-3 mb-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4">
           <NumField label="Sueldo Base" value={form.sueldo_base} onChange={set('sueldo_base')} />
           <NumField label="Comisión" value={form.comision_mensual} onChange={set('comision_mensual')} />
           <NumField label="Bonificación" value={form.bonificacion} onChange={set('bonificacion')} />
@@ -33,7 +33,7 @@ export default function DetalleForm({ form, setForm, empleados, editing, error, 
           <NumField label="Extra" value={form.asignacion_extra} onChange={set('asignacion_extra')} />
         </div>
         <h4 className="text-sm font-semibold text-red-700 mb-2">📉 Deducciones</h4>
-        <div className="grid grid-cols-4 gap-3 mb-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
           <NumField label="Seg. Social" value={form.deduccion_seguro_social} onChange={set('deduccion_seguro_social')} />
           <NumField label="PARO" value={form.deduccion_paro} onChange={set('deduccion_paro')} />
           <NumField label="INCES" value={form.deduccion_inces} onChange={set('deduccion_inces')} />

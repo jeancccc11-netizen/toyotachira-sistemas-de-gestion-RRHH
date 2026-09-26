@@ -73,24 +73,24 @@ export default function Nomina() {
   if (loading) return <LoadingSpinner />;
   return (
     <div>
-      <PageHeader title="Nómina" action={<div className="flex gap-2">
+      <PageHeader title="Nómina" action={<div className="flex flex-wrap gap-2">
         {canWrite && <button onClick={() => toggle('periodo')} className="flex items-center gap-2 bg-primary-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-primary-700"><Plus size={16} /> Nuevo Período</button>}
-        {canWrite && selected && <button onClick={() => toggle('import')} className="flex items-center gap-2 bg-amber-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-amber-700"><Table size={16} /> Importar</button>}
+        {canWrite && selected && <button onClick={() => toggle('import')} className="flex items-center gap-2 bg-gray-700 text-white px-4 py-2 rounded-lg text-sm hover:bg-gray-800"><Table size={16} /> Importar</button>}
         {selected && <button onClick={() => downloadFile(`/api/nomina/${selected.id}/export/excel`, `nomina-${selected.id}.xlsx`)} className="flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-green-700"><Table size={16} /> Exportar</button>}
-        <button onClick={() => toggle('historial')} className="flex items-center gap-2 bg-gray-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-gray-700"><History size={16} /> Historial</button>
+        <button onClick={() => toggle('historial')} className="flex items-center gap-2 bg-white text-gray-700 border border-gray-300 px-4 py-2 rounded-lg text-sm hover:bg-gray-100"><History size={16} /> Historial</button>
       </div>} />
       {show.periodo && <PeriodoForm form={periodoForm} setForm={setPeriodoForm} error={error} onSubmit={createPeriodo} onClose={() => toggle('periodo')} />}
       {show.import && selected && <ImportarForm nominaId={selected.id} onDone={() => { loadDet(selected); toggle('import'); }} />}
       {show.historial && <HistorialPeriodo onSelect={(p) => { const per = periodos.find((x) => x.id === p.id); if (per) setSelected(per); toggle('historial'); }} />}
       <PeriodoSelector periodos={periodos} selected={selected} onSelect={setSelected} onRefresh={load} />
       {show.detalle && <DetalleForm form={detalleForm} setForm={setDetalleForm} empleados={empleados} editing={editing} error={error} onSubmit={saveDetalle} onClose={() => { toggle('detalle'); setEditing(null); }} />}
-      {total && <div className="grid grid-cols-3 gap-4 mb-6">
+      {total && <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
         <div className="bg-white rounded-xl shadow p-4 text-center"><p className="text-xs text-gray-500">Empleados</p><p className="text-2xl font-bold">{total.total_empleados}</p></div>
         <div className="bg-white rounded-xl shadow p-4 text-center"><p className="text-xs text-gray-500">Total Asignaciones</p><p className="text-2xl font-bold text-green-600">{fmt(total.total_asignaciones)}</p></div>
         <div className="bg-white rounded-xl shadow p-4 text-center"><p className="text-xs text-gray-500">Total Neto</p><p className="text-2xl font-bold text-primary-600">{fmt(total.total_neto)}</p></div>
       </div>}
-      <div className="bg-white rounded-xl shadow overflow-hidden">
-        <div className="px-4 py-3 border-b flex items-center justify-between">
+      <div className="bg-white rounded-xl shadow overflow-x-auto">
+        <div className="px-4 py-3 border-b flex flex-wrap items-center justify-between gap-2">
           <h2 className="font-semibold text-sm">Detalles ({detalles.length})</h2>
           {canWrite && selected && <button onClick={() => openDetalle()} className="flex items-center gap-1 text-sm text-primary-600 hover:underline"><Plus size={14} /> Agregar Empleado</button>}
         </div>

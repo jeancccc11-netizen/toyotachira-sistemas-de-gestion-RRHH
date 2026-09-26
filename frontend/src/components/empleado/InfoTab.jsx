@@ -18,7 +18,7 @@ export default function InfoTab({ empleado }) {
   ];
 
   return (
-    <div className="bg-white rounded-xl shadow p-6 grid grid-cols-2 gap-4 text-sm">
+    <div className="bg-white rounded-xl shadow p-4 sm:p-6 grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
       {fields.map(([label, val]) => (
         <div key={label}>
           <p className="text-xs text-gray-500">{label}</p>

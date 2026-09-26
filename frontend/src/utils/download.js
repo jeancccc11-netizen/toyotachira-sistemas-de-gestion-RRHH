@@ -1,9 +1,13 @@
-const RENDER_URL = 'https://toyotachira-sistemas-de-gestion-rrhh.onrender.com/api';
+// Misma base que usa el resto de la app (VITE_API_URL):
+//  - desarrollo: '/api' -> proxy de Vite -> backend local (localhost:3001)
+//  - producción (Vercel): rewrite de vercel.json -> backend de Render
+const API_BASE = (import.meta.env.VITE_API_URL || '/api').replace(/\/+$/, '');
 
 export default async function downloadFile(url, filename) {
   const token = localStorage.getItem('token');
-  const path = url.replace(/^\/api/, '');
-  const fullUrl = url.startsWith('http') ? url : `${RENDER_URL}${path}`;
+  const fullUrl = url.startsWith('http')
+    ? url
+    : `${API_BASE}${url.replace(/^\/api/, '')}`;
   try {
     const res = await fetch(fullUrl, {
       headers: { Authorization: `Bearer ${token}` },

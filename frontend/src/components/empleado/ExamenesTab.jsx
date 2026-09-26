@@ -27,7 +27,7 @@ export default function ExamenesTab({ examenes, empleadoId, onRefresh }) {
         <button onClick={() => setShowForm(!showForm)} className="flex items-center gap-1 text-sm text-primary-600 hover:underline"><Plus size={14} /> Nuevo</button>
       </div>
       {showForm && (
-        <form onSubmit={handleCreate} className="grid grid-cols-2 gap-2 mb-3 p-3 bg-gray-50 rounded-lg">
+        <form onSubmit={handleCreate} className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3 p-3 bg-gray-50 rounded-lg">
           <select value={form.tipo_registro} onChange={(e) => setForm({ ...form, tipo_registro: e.target.value })} className="border rounded-lg px-2 py-1 text-sm">
             {['Examen Ocupacional', 'Laboratorio', 'Reposo Médico', 'Control Periódico'].map((t) => <option key={t}>{t}</option>)}
           </select>
