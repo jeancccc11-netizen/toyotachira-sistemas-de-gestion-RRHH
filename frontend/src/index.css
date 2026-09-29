@@ -13,11 +13,21 @@
     overflow-x: hidden;
   }
 
-  /* Los inputs de 16px evitan el auto-zoom de iOS Safari al enfocar */
+  /* Los inputs de 16px evitan el auto-zoom de iOS Safari al enfocar.
+   * En móvil se fuerza con !important para que ninguna clase utilitaria
+   * (p. ej. text-sm en Login) baje de 16px y dispare el zoom del teclado. */
   input,
   select,
   textarea {
     font-size: 16px;
+  }
+
+  @media (max-width: 639.98px) {
+    input,
+    select,
+    textarea {
+      font-size: 16px !important;
+    }
   }
 
   @media (min-width: 640px) {
@@ -93,7 +103,7 @@
       gap: 1rem;
       padding: 0.45rem 0;
       border: 0;
-      border-bottom: 1px dashed #edee;
+      border-bottom: 1px dashed #e5e7eb;
       text-align: right;
       white-space: normal;
     }

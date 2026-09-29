@@ -1,21 +1,32 @@
 import { useState, useRef } from 'react';
-import { Camera } from 'lucide-react';
+import { Camera, AlertCircle } from 'lucide-react';
 import api, { directApi } from '../../api/client';
 import AuthImg from '../ui/AuthImg';
 
 export default function PhotoTab({ empleado, onRefresh }) {
   const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState('');
   const inputRef = useRef();
 
   const handleUpload = async (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files?.[0];
     if (!file) return;
     setUploading(true);
-    const fd = new FormData();
-    fd.append('foto', file);
-    await (directApi || api).post(`/empleados/${empleado.id}/foto`, fd);
-    setUploading(false);
-    onRefresh();
+    setError('');
+    try {
+      const fd = new FormData();
+      fd.append('foto', file);
+      await (directApi || api).post(`/empleados/${empleado.id}/foto`, fd);
+      onRefresh();
+    } catch (err) {
+      const msg = err.response?.data?.error;
+      setError(msg || (err.response?.status === 413
+        ? 'La imagen es muy grande (máx. 5MB)'
+        : 'Error al subir la foto. Intenta de nuevo'));
+    } finally {
+      setUploading(false);
+      e.target.value = '';
+    }
   };
 
   return (
@@ -46,6 +57,11 @@ export default function PhotoTab({ empleado, onRefresh }) {
           </p>
           {uploading && (
             <p className="text-xs text-primary-600 mt-2">Subiendo...</p>
+          )}
+          {error && (
+            <p className="text-xs text-red-600 mt-2 flex items-center gap-1 justify-center sm:justify-start">
+              <AlertCircle size={12} /> {error}
+            </p>
           )}
         </div>
       </div>

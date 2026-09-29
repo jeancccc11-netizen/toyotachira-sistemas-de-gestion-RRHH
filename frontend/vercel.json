@@ -5,6 +5,10 @@
       "destination": "https://toyotachira-sistemas-de-gestion-rrhh.onrender.com/api/:path*"
     },
     {
+      "source": "/uploads/:path*",
+      "destination": "https://toyotachira-sistemas-de-gestion-rrhh.onrender.com/uploads/:path*"
+    },
+    {
       "source": "/((?!api/).*)",
       "destination": "/index.html"
     }
