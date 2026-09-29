@@ -47,7 +47,7 @@ export default function Empleados() {
     <div>
       {cState.show && <ConfirmDialog message={cState.message} onConfirm={handleConfirm} onCancel={handleCancel} />}
       <PageHeader title="Empleados" action={canWrite && (
-        <Link to="/empleados/new" className="btn-touch flex items-center gap-2 bg-primary-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-primary-700"><Plus size={16} /> Nuevo Empleado</Link>
+        <Link to="/empleados/new" className="btn-touch flex items-center gap-2 bg-primary-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-primary-700 transition-all active:scale-[0.98]"><Plus size={16} /> Nuevo Empleado</Link>
       )} />
       <div className="grid grid-cols-1 sm:flex sm:flex-wrap sm:items-center gap-3 mb-4">
         <div className="relative sm:flex-1 sm:max-w-md">
@@ -60,7 +60,7 @@ export default function Empleados() {
         </select>
       </div>
       {loading ? <LoadingSpinner /> : items.length === 0 ? <p className="text-gray-500">No se encontraron empleados</p> : (
-        <div className="bg-white rounded-xl shadow overflow-x-auto">
+        <div className="bg-white rounded-xl shadow overflow-x-auto animate-fade-in">
           <table className="w-full text-sm min-w-[760px] whitespace-nowrap rwd">
             <thead className="bg-gray-50 text-left"><tr><th className="px-4 py-3">Nombre</th><th>N°</th><th>Cédula</th><th>Depto.</th><th>Cargo</th><th>Estado</th><th className="text-right">Acciones</th></tr></thead>
             <tbody className="divide-y divide-gray-100">

@@ -68,7 +68,7 @@ export default function Examenes() {
         </div>
       )}
       {showForm && <ExamenForm empleados={empleados} onSubmit={handleCreate} onClose={() => setShowForm(false)} />}
-      <div className="bg-white rounded-xl shadow overflow-x-auto">
+      <div className="bg-white rounded-xl shadow overflow-x-auto animate-fade-in">
         <div className="px-4 py-3 border-b"><h2 className="font-semibold text-sm flex items-center gap-2"><Clipboard size={16} /> Registros ({examenes.length})</h2></div>
         <table className="w-full text-sm min-w-[720px] whitespace-nowrap rwd">
           <thead className="bg-gray-50 text-left"><tr><th className="px-4 py-3">Tipo</th><th>Empleado</th><th>Fecha</th><th>Diagnóstico</th><th>Estado</th><th></th></tr></thead>

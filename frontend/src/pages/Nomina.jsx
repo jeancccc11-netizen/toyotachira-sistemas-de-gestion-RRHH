@@ -89,7 +89,7 @@ export default function Nomina() {
         <div className="bg-white rounded-xl shadow p-4 text-center"><p className="text-xs text-gray-500">Total Asignaciones</p><p className="text-2xl font-bold text-green-600">{fmt(total.total_asignaciones)}</p></div>
         <div className="bg-white rounded-xl shadow p-4 text-center"><p className="text-xs text-gray-500">Total Neto</p><p className="text-2xl font-bold text-primary-600">{fmt(total.total_neto)}</p></div>
       </div>}
-      <div className="bg-white rounded-xl shadow overflow-x-auto">
+      <div className="bg-white rounded-xl shadow overflow-x-auto animate-fade-in">
         <div className="px-4 py-3 border-b flex flex-wrap items-center justify-between gap-2">
           <h2 className="font-semibold text-sm">Detalles ({detalles.length})</h2>
           {canWrite && selected && <button onClick={() => openDetalle()} className="flex items-center gap-1 text-sm text-primary-600 hover:underline"><Plus size={14} /> Agregar Empleado</button>}

@@ -11,7 +11,7 @@ const colors = {
 
 export default function Badge({ value }) {
   return (
-    <span className={`px-2 py-1 rounded-full text-xs font-medium ${colors[value] || 'bg-gray-100 text-gray-600'}`}>
+    <span className={`inline-block px-2 py-1 rounded-full text-xs font-medium animate-pop ${colors[value] || 'bg-gray-100 text-gray-600'}`}>
       {value}
     </span>
   );

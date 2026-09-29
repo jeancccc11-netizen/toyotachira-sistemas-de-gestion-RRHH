@@ -23,7 +23,7 @@ export default function Login() {
 
   return (
     <div className="min-h-screen min-h-[100dvh] flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-black">
-      <div className="w-full max-w-md px-4 py-8">
+      <div className="w-full max-w-md px-4 py-8 animate-rise">
         <div className="text-center mb-6 sm:mb-8">
           <div className="inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-primary-600 mb-3 sm:mb-4">
             <LogIn size={26} className="text-white sm:hidden" />
@@ -36,7 +36,7 @@ export default function Login() {
           <p className="text-gray-500 text-xs mt-1">Toyotachira S.A.</p>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-2xl p-8">
+        <div className="bg-white rounded-2xl shadow-2xl p-6 sm:p-8 animate-rise" style={{ animationDelay: '.08s' }}>
           <h2 className="text-lg font-semibold text-gray-800 mb-6">Iniciar Sesión</h2>
 
           {error && (

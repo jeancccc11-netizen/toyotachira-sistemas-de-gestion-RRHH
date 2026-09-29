@@ -54,7 +54,7 @@ export default function Departamentos() {
         <button onClick={() => { setShowForm(!showForm); setEditing(null); setNombre(''); setDescripcion(''); }} className="flex items-center gap-2 bg-primary-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-primary-700"><Plus size={16} /> Nuevo</button>
       )} />
       {showForm && (
-        <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow p-4 mb-6">
+        <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow p-4 mb-6 animate-rise">
           <h3 className="font-semibold text-sm mb-3">{editing ? 'Editar' : 'Nuevo'} Departamento</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <input placeholder="Nombre" value={nombre} onChange={(e) => setNombre(e.target.value)} required className="border border-gray-300 rounded-lg px-3 py-2 text-sm" />
@@ -66,7 +66,7 @@ export default function Departamentos() {
           </div>
         </form>
       )}
-      <div className="bg-white rounded-xl shadow overflow-x-auto">
+      <div className="bg-white rounded-xl shadow overflow-x-auto animate-fade-in">
         <table className="w-full text-sm min-w-[560px] whitespace-nowrap rwd">
           <thead className="bg-gray-50 text-left"><tr><th className="px-4 py-3">ID</th><th>Nombre</th><th>Descripción</th><th className="text-right">Acciones</th></tr></thead>
           <tbody className="divide-y divide-gray-100">

@@ -2,9 +2,9 @@ import { AlertTriangle } from 'lucide-react';
 
 export default function ConfirmDialog({ message, onConfirm, onCancel }) {
   return (
-    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50"
+    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 animate-fade-in"
       onClick={onCancel}>
-      <div className="bg-white rounded-xl shadow-xl p-6 max-w-sm w-full mx-4"
+      <div className="bg-white rounded-xl shadow-xl p-6 max-w-sm w-full mx-4 animate-pop"
         onClick={(e) => e.stopPropagation()}>
         <div className="flex items-center gap-3 mb-4">
           <div className="p-2 bg-amber-100 rounded-full">

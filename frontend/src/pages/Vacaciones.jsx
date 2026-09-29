@@ -69,7 +69,7 @@ export default function Vacaciones() {
         ))}
       </div>
       {tab === 'historial' && (
-        <div className="bg-white rounded-xl shadow overflow-x-auto">
+        <div className="bg-white rounded-xl shadow overflow-x-auto animate-fade-in">
           <div className="px-4 py-3 border-b"><h2 className="font-semibold text-sm">Historial ({todas.length})</h2></div>
           <HistorialTable items={pag.items} />
           <Pagination page={pag.page} totalPages={pag.totalPages} onPageChange={pag.goTo} />
@@ -77,7 +77,7 @@ export default function Vacaciones() {
       )}
       {tab === 'pendientes' && (<>
         {showForm && <SolicitudForm empleados={empleados} form={form} setForm={setForm} error={error} onSubmit={submit} onClose={() => setShowForm(false)} />}
-        <div className="bg-white rounded-xl shadow overflow-x-auto">
+        <div className="bg-white rounded-xl shadow overflow-x-auto animate-fade-in">
           <div className="px-4 py-3 border-b"><h2 className="font-semibold text-sm">Pendientes ({pendientes.length})</h2></div>
           <PendientesTable items={pendientes} canWrite={canWrite} onAprobar={aprobar} onRechazar={rechazar} />
         </div>

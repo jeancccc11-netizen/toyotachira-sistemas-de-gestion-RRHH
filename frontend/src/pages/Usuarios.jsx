@@ -118,7 +118,7 @@ export default function Usuarios() {
           onClose={closeForm}
         />
       )}
-      <div className="bg-white rounded-xl shadow overflow-x-auto">
+      <div className="bg-white rounded-xl shadow overflow-x-auto animate-fade-in">
         <div className="px-4 py-3 border-b"><h2 className="font-semibold text-sm">Usuarios ({users.length})</h2></div>
         <table className="w-full text-sm min-w-[640px] whitespace-nowrap rwd">
           <thead className="bg-gray-50 text-left">

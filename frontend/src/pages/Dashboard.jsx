@@ -4,12 +4,19 @@ import useApi from '../hooks/useApi';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 
 const KPICard = ({ icon, title, value, link }) => {
-  const content = <div className="bg-white rounded-xl shadow p-4 flex items-center gap-3"><div className="p-2 bg-gray-100 rounded-lg">{icon}</div><div><p className="text-xs text-gray-500">{title}</p><p className="text-xl font-bold">{value}</p></div></div>;
-  return link ? <Link to={link} className="hover:shadow-md transition-shadow">{content}</Link> : content;
+  const content = (
+    <div className="bg-white rounded-xl shadow p-4 flex items-center gap-3 card-hover">
+      <div className="p-2 bg-gray-100 rounded-lg transition-transform duration-200 group-hover:scale-110">{icon}</div>
+      <div><p className="text-xs text-gray-500">{title}</p><p className="text-xl font-bold">{value}</p></div>
+    </div>
+  );
+  return link ? <Link to={link} className="group">{content}</Link> : content;
 };
 
 const QuickLink = ({ to, icon, label }) => (
-  <Link to={to} className="flex items-center gap-3 bg-white rounded-xl shadow p-4 hover:shadow-md transition-shadow">{icon}<span className="text-sm font-medium">{label}</span></Link>
+  <Link to={to} className="flex items-center gap-3 bg-white rounded-xl shadow p-4 card-hover">
+    {icon}<span className="text-sm font-medium">{label}</span>
+  </Link>
 );
 
 export default function Dashboard() {
@@ -20,15 +27,15 @@ export default function Dashboard() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
-      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 mb-8">
+      <h1 className="text-2xl font-bold mb-6 animate-rise">Dashboard</h1>
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 mb-8 stagger">
         <KPICard icon={<Users className="text-primary-600" />} title="Total Empleados" value={stats.empleados?.total || 0} link="/empleados" />
         <KPICard icon={<Users className="text-green-600" />} title="Activos" value={stats.empleados?.activos || 0} />
         <KPICard icon={<Calendar className="text-amber-500" />} title="Vacaciones" value={stats.empleados?.vacaciones || 0} link="/vacaciones" />
         <KPICard icon={<Shield className="text-red-600" />} title="Reposos" value={stats.reposos_activos || 0} link="/examenes" />
         <KPICard icon={<FileText className="text-gray-500" />} title="Solicitudes" value={stats.solicitudes_pendientes || 0} link="/vacaciones" />
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:mb-8 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:mb-8 mb-6 stagger">
         <div className="bg-white rounded-xl shadow p-5">
           <div className="flex items-center gap-2 mb-3"><Shield size={18} className="text-primary-600" /><h3 className="font-semibold text-sm">Urosalud</h3></div>
           <div className="grid grid-cols-2 gap-4">
@@ -45,8 +52,8 @@ export default function Dashboard() {
           </div>
         )}
       </div>
-      <h2 className="text-lg font-semibold mb-4">Accesos Rápidos</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
+      <h2 className="text-lg font-semibold mb-4 animate-fade-in">Accesos Rápidos</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 stagger">
         <QuickLink to="/empleados" icon={<Users />} label="Empleados" />
         <QuickLink to="/departamentos" icon={<Building2 />} label="Departamentos" />
         <QuickLink to="/vacaciones" icon={<Calendar />} label="Vacaciones" />
