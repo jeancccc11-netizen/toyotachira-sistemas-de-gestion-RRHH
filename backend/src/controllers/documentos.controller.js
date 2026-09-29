@@ -22,7 +22,7 @@ const documentosController = {
   upload: async (req, res, next) => {
     try {
       if (!req.file) return res.status(400).json({ error: 'Archivo requerido' });
-      const { empleado_id, tipo_documento, observaciones } = req.body;
+      const { empleado_id, tipo_documento, observaciones, carpeta } = req.body;
       if (!empleado_id || !tipo_documento) {
         return res.status(400).json({ error: 'empleado_id y tipo_documento requeridos' });
       }
@@ -30,6 +30,7 @@ const documentosController = {
         empleado_id: parseInt(empleado_id), tipo_documento,
         nombre_archivo: req.file.originalname, ruta_archivo: req.file.path,
         observaciones,
+        carpeta: carpeta ? String(carpeta).trim() : null,
       });
       res.status(201).json(result.rows[0]);
     } catch (err) { next(err); }
