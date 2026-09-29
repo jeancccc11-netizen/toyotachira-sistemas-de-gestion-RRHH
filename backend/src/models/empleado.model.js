@@ -48,8 +48,9 @@ const Empleado = {
       `INSERT INTO empleados
         (nro, cedula, nombre_completo, departamento_id, posicion_cargo,
          fecha_ingreso, salario_base, estado_operativo, tipo_tasa,
-         porcentaje_bs, porcentaje_usd, grupo, email, telefono, direccion)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)
+         porcentaje_bs, porcentaje_usd, grupo, email, telefono, direccion,
+         numero_cuenta, banco)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17)
        RETURNING *`,
       [
         data.nro, data.cedula, data.nombre_completo, data.departamento_id,
@@ -57,6 +58,7 @@ const Empleado = {
         data.estado_operativo || 'Activo', data.tipo_tasa,
         data.porcentaje_bs, data.porcentaje_usd, data.grupo,
         data.email, data.telefono, data.direccion,
+        data.numero_cuenta || null, data.banco || null,
       ]
     ),
 

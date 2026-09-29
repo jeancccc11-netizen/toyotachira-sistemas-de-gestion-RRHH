@@ -5,7 +5,15 @@ import api from '../api/client';
 import FormField from '../components/ui/FormField';
 import ErrorAlert from '../components/ui/ErrorAlert';
 
-const empty = { nro: '', cedula: '', nombre_completo: '', departamento_id: '', posicion_cargo: '', fecha_ingreso: '', salario_base: '', estado_operativo: 'Activo', tipo_tasa: 'Bs', email: '', telefono: '', direccion: '' };
+const BANCOS = [
+  'Banco de Venezuela', 'Banco Provincial', 'Banesco', 'Mercantil',
+  'BBVA Provincial', 'Bancaribe', 'Banco Nacional de Crédito (BNC)',
+  'Banco Exterior', 'Banco Sofitasa', 'Banco Activo', 'Banco del Tesoro',
+  'Banco de la Gente (Bandes)', 'Mi Banco', 'Banco Plaza', 'Bancamiga',
+  'Otro',
+];
+
+const empty = { nro: '', cedula: '', nombre_completo: '', departamento_id: '', posicion_cargo: '', fecha_ingreso: '', salario_base: '', estado_operativo: 'Activo', tipo_tasa: 'Bs', email: '', telefono: '', direccion: '', numero_cuenta: '', banco: '' };
 
 export default function EmpleadoForm() {
   const { id } = useParams();
@@ -20,7 +28,7 @@ export default function EmpleadoForm() {
     api.get('/departamentos').then((r) => setDepartamentos(r.data));
     if (isEdit) api.get(`/empleados/${id}`).then((r) => {
       const e = r.data;
-      setForm({ nro: e.nro, cedula: e.cedula, nombre_completo: e.nombre_completo, departamento_id: e.departamento_id, posicion_cargo: e.posicion_cargo || '', fecha_ingreso: e.fecha_ingreso?.split('T')[0] || '', salario_base: e.salario_base, estado_operativo: e.estado_operativo, tipo_tasa: e.tipo_tasa || 'Bs', email: e.email || '', telefono: e.telefono || '', direccion: e.direccion || '' });
+      setForm({ nro: e.nro, cedula: e.cedula, nombre_completo: e.nombre_completo, departamento_id: e.departamento_id, posicion_cargo: e.posicion_cargo || '', fecha_ingreso: e.fecha_ingreso?.split('T')[0] || '', salario_base: e.salario_base, estado_operativo: e.estado_operativo, tipo_tasa: e.tipo_tasa || 'Bs', email: e.email || '', telefono: e.telefono || '', direccion: e.direccion || '', numero_cuenta: e.numero_cuenta || '', banco: e.banco || '' });
     }).catch(() => navigate('/empleados'));
   }, [id, isEdit, navigate]);
 
@@ -54,6 +62,8 @@ export default function EmpleadoForm() {
           <div><label className="block text-sm font-medium text-gray-700 mb-1">Tipo Tasa</label><select value={form.tipo_tasa} onChange={set('tipo_tasa')} className="w-full border border-gray-300 rounded-lg px-3 py-2.5 sm:py-2 text-sm"><option>Bs</option><option>USD</option></select></div>
           <FormField label="Email" type="email" value={form.email} onChange={set('email')} />
           <FormField label="Teléfono" value={form.telefono} onChange={set('telefono')} />
+          <FormField label="N° de Cuenta" value={form.numero_cuenta} onChange={set('numero_cuenta')} placeholder="0105-0000-0000000000" maxLength={30} />
+          <div><label className="block text-sm font-medium text-gray-700 mb-1">Banco</label><select value={form.banco} onChange={set('banco')} className="w-full border border-gray-300 rounded-lg px-3 py-2.5 sm:py-2 text-sm"><option value="">Seleccionar...</option>{BANCOS.map((b) => <option key={b}>{b}</option>)}{form.banco && !BANCOS.includes(form.banco) && <option value={form.banco}>{form.banco}</option>}</select></div>
           <FormField label="Dirección" value={form.direccion} onChange={set('direccion')} className="sm:col-span-2" />
         </div>
         <div className="flex flex-col-reverse sm:flex-row gap-3 pt-4 border-t">

@@ -28,11 +28,17 @@ export default function Vacaciones() {
   const pag = usePagination(todas);
 
   const load = async () => {
-    const [p, t, e] = await Promise.all([
-      api.get('/vacaciones/solicitudes/pendientes'), api.get('/vacaciones/historial/todas'),
-      api.get('/empleados?limit=100')
-    ]);
-    setPendientes(p.data); setTodas(t.data); setEmpleados(e.data); setLoading(false);
+    try {
+      const [p, t, e] = await Promise.all([
+        api.get('/vacaciones/solicitudes/pendientes'), api.get('/vacaciones/historial/todas'),
+        api.get('/empleados?limit=100')
+      ]);
+      setPendientes(p.data); setTodas(t.data); setEmpleados(e.data);
+    } catch {
+      toast.error('Error al cargar las vacaciones');
+    } finally {
+      setLoading(false);
+    }
   };
   useEffect(() => { load(); }, []);
 

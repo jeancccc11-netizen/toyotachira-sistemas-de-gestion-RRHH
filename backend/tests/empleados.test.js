@@ -35,8 +35,11 @@ describe('POST /api/empleados', () => {
     const res = await request(app).post('/api/empleados').set(H).send({
       nro: 9999, cedula: 'V-99.999.999', nombre_completo: 'Empleado Prueba',
       departamento_id: 1, fecha_ingreso: '2026-01-15', salario_base: 1500, estado_operativo: 'Activo',
+      numero_cuenta: '01050123456789012345', banco: 'Mercantil',
     });
     expect(res.status).toBe(201);
+    expect(res.body.numero_cuenta).toBe('01050123456789012345');
+    expect(res.body.banco).toBe('Mercantil');
     cid = res.body.id;
     setTestEmpleadoId(cid);
   });
@@ -64,6 +67,13 @@ describe('PUT /api/empleados/:id', () => {
       .send({ nombre_completo: 'Actualizado', salario_base: 2000 });
     expect(res.status).toBe(200);
     expect(res.body.nombre_completo).toBe('Actualizado');
+  });
+  it('debe actualizar numero_cuenta y banco', async () => {
+    const res = await request(app).put(`/api/empleados/${cid}`).set(H)
+      .send({ numero_cuenta: '01160011223344556677', banco: 'Banco de Venezuela' });
+    expect(res.status).toBe(200);
+    expect(res.body.numero_cuenta).toBe('01160011223344556677');
+    expect(res.body.banco).toBe('Banco de Venezuela');
   });
 });
 

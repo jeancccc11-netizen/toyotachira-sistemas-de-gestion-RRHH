@@ -1,4 +1,4 @@
-import { Pencil, Download } from 'lucide-react';
+import { Pencil, Download, FileText } from 'lucide-react';
 import EmptyState from '../ui/EmptyState';
 import downloadFile from '../../utils/download';
 
@@ -7,6 +7,13 @@ const fmt = (v) => parseFloat(v || 0).toFixed(2);
 export default function DetalleTable({ detalles, periodoId, onEdit, refreshKey }) {
   const handlePdf = (d) => {
     downloadFile(`/api/nomina/${periodoId}/recibo/${d.id}/pdf`, `recibo-${d.id}.pdf`);
+  };
+
+  // Abre el recibo en una pestaña nueva con el token en la URL (ver/imprimir)
+  const verPdf = (d) => {
+    const token = localStorage.getItem('token');
+    const base = (import.meta.env.VITE_API_URL || '/api').replace(/\/+$/, '');
+    window.open(`${base}/nomina/${periodoId}/recibo/${d.id}/pdf?token=${encodeURIComponent(token)}`, '_blank');
   };
 
   if (!detalles.length) return <EmptyState message="No hay detalles. Agrega empleados a este período." />;
@@ -36,9 +43,11 @@ export default function DetalleTable({ detalles, periodoId, onEdit, refreshKey }
             <td data-label="Acciones" className="text-right">
               <div className="flex items-center justify-end gap-1">
                 <button onClick={() => onEdit(d)}
-                  className="p-1.5 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200"><Pencil size={14} /></button>
+                  className="p-1.5 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200" title="Editar"><Pencil size={14} /></button>
+                <button onClick={() => verPdf(d)}
+                  className="p-1.5 bg-primary-50 text-primary-600 rounded-lg hover:bg-primary-100" title="Ver / Imprimir recibo"><FileText size={14} /></button>
                 <button onClick={() => handlePdf(d)}
-                  className="p-1.5 bg-green-100 text-green-600 rounded-lg hover:bg-green-200"><Download size={14} /></button>
+                  className="p-1.5 bg-green-100 text-green-600 rounded-lg hover:bg-green-200" title="Descargar PDF"><Download size={14} /></button>
               </div>
             </td>
           </tr>

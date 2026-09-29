@@ -107,6 +107,7 @@ const nominaPdfController = {
       const result = await query(
         `SELECT dn.*,
                 e.nombre_completo, e.cedula, e.posicion_cargo, e.fecha_ingreso,
+                e.numero_cuenta, e.banco,
                 dep.nombre AS departamento,
                 p.quincena, p.mes, p.anio, p.fecha_inicio, p.fecha_fin
          FROM detalles_nomina dn
@@ -267,6 +268,10 @@ const nominaPdfController = {
       txt('SALARIO BASE DIARIO', cellBox(0, 0, 12), { bold: true, align: 'center' });
       txt(dias > 0 ? num(diario) : '', cellBox(1, 1, 12), { bold: true, align: 'center' });
       txt('N°DE CUENTA A DEPOSITAR', cellBox(4, 5, 12), { bold: true, align: 'center' });
+      // N° de cuenta y banco del empleado (columnas 6-7 de la fila 12)
+      const cuentaTxt = d.numero_cuenta ? String(d.numero_cuenta) : '';
+      const bancoTxt = d.banco ? ` (${String(d.banco).trim()})` : '';
+      txt(cuentaTxt + bancoTxt, cellBox(6, 7, 12), { align: 'center', size: 9 });
 
       // ---------- 5. encabezado de tabla (fila 14) ----------
       fillBox(M, ROW_Y[14], CW_NAT, ROW_H[14], GRAY_HEAD);

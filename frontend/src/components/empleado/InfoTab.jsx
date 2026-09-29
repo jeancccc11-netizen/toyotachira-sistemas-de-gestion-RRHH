@@ -13,6 +13,8 @@ export default function InfoTab({ empleado }) {
     ['Estado', empleado.estado_operativo],
     ['Email', empleado.email || '—'],
     ['Teléfono', empleado.telefono || '—'],
+    ['N° de Cuenta', empleado.numero_cuenta || '—'],
+    ['Banco', empleado.banco || '—'],
     ['Dirección', empleado.direccion || '—'],
     ['Registro', fmtDate(empleado.created_at)],
   ];

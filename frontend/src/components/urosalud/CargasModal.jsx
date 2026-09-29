@@ -4,36 +4,60 @@ import Modal from '../ui/Modal';
 import api from '../../api/client';
 import useRole from '../../hooks/useRole';
 
+const emptyForm = {
+  nombre_completo: '', cedula_o_identificador: '',
+  parentesco: 'Cónyuge', sexo: 'F', edad: ''
+};
+
 export default function CargasModal({ sel, cargas, setCargas, onClose }) {
-  if (!sel) return null;
+  // ⚠️ Los hooks SIEMPRE al inicio, antes de cualquier return condicional
   const [showForm, setShowForm] = useState(false);
-  const [form, setForm] = useState({
-    nombre_completo: '', cedula_o_identificador: '',
-    parentesco: 'Cónyuge', sexo: 'F', edad: ''
-  });
+  const [form, setForm] = useState(emptyForm);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
   const { canWrite, canDelete } = useRole();
+
+  if (!sel) return null;
+
+  const recargar = async () => {
+    const res = await api.get(`/urosalud/cargas/${sel.id}`);
+    setCargas(res.data || []);
+  };
 
   const handleCreate = async (e) => {
     e.preventDefault();
+    setSaving(true);
+    setError('');
     try {
       await api.post('/urosalud/cargas', { ...form, poliza_id: sel.id });
-      const res = await api.get(`/urosalud/cargas/${sel.id}`);
-      setCargas(res.data || []); setShowForm(false);
-      setForm({ nombre_completo: '', cedula_o_identificador: '',
-        parentesco: 'Cónyuge', sexo: 'F', edad: '' });
-    } catch (err) { console.error(err); }
+      await recargar();
+      setShowForm(false);
+      setForm(emptyForm);
+    } catch (err) {
+      setError(err.response?.data?.error || 'Error al guardar la carga familiar');
+    } finally {
+      setSaving(false);
+    }
   };
+
   const handleDelete = async (id) => {
     if (!window.confirm('¿Eliminar carga?')) return;
+    setError('');
     try {
       await api.delete(`/urosalud/cargas/${id}`);
-      const res = await api.get(`/urosalud/cargas/${sel.id}`);
-      setCargas(res.data || []);
-    } catch (err) { console.error(err); }
+      await recargar();
+    } catch (err) {
+      setError(err.response?.data?.error || 'Error al eliminar la carga');
+    }
   };
 
   return (
     <Modal title={`Cargas — ${sel.nombre_completo}`} onClose={onClose}>
+      {error && (
+        <p className="mb-3 text-sm text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2">
+          {error}
+        </p>
+      )}
       {canWrite && (
         <button onClick={() => setShowForm(!showForm)}
           className="mb-3 text-sm text-primary-600 hover:underline flex items-center gap-1">
@@ -58,8 +82,10 @@ export default function CargasModal({ sel, cargas, setCargas, onClose }) {
                 <option key={p}>{p}</option>
               ))}
             </select>
-            <button type="submit"
-              className="w-full sm:w-auto py-2 px-3 bg-primary-600 text-white rounded-lg text-sm">Guardar</button>
+            <button type="submit" disabled={saving}
+              className="w-full sm:w-auto py-2 px-3 bg-primary-600 text-white rounded-lg text-sm disabled:opacity-50">
+              {saving ? 'Guardando...' : 'Guardar'}
+            </button>
           </div>
         </form>
       )}
