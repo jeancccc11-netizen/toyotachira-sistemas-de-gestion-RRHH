@@ -22,6 +22,32 @@ const Usuario = {
 
   toggleActive: (id, activo) =>
     query('UPDATE usuarios SET activo = $2 WHERE id = $1 RETURNING id, activo', [id, activo]),
+
+  update: (id, { username, rol, empleadoId, activo }) => {
+    const fields = [];
+    const params = [];
+    let i = 1;
+    if (username !== undefined) { fields.push(`username = $${i++}`); params.push(username); }
+    if (rol !== undefined) { fields.push(`rol = $${i++}`); params.push(rol); }
+    if (empleadoId !== undefined) { fields.push(`empleado_id = $${i++}`); params.push(empleadoId); }
+    if (activo !== undefined) { fields.push(`activo = $${i++}`); params.push(activo); }
+    if (!fields.length) return query('SELECT id, username, rol FROM usuarios WHERE id = $1', [id]);
+    params.push(id);
+    return query(
+      `UPDATE usuarios SET ${fields.join(', ')} WHERE id = $${i}
+       RETURNING id, username, rol, empleado_id, activo`,
+      params
+    );
+  },
+
+  updatePassword: (id, passwordHash) =>
+    query(
+      'UPDATE usuarios SET password_hash = $2 WHERE id = $1 RETURNING id, username',
+      [id, passwordHash]
+    ),
+
+  remove: (id) =>
+    query('DELETE FROM usuarios WHERE id = $1 RETURNING id, username', [id]),
 };
 
 module.exports = Usuario;

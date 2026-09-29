@@ -8,6 +8,9 @@ router.use(roleMiddleware('admin'));
 
 router.get('/', ctrl.list);
 router.post('/', ctrl.create);
+router.put('/:id', ctrl.update);
+router.put('/:id/password', ctrl.updatePassword);
 router.put('/:id/toggle', ctrl.toggleActive);
+router.delete('/:id', ctrl.remove);
 
 module.exports = router;
