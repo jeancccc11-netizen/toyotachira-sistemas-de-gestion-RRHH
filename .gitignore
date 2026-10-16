@@ -8,3 +8,4 @@ dist/
 build/
 coverage/
 .vite/
+backend/backend-server.log
