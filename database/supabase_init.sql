@@ -327,9 +327,9 @@ INSERT INTO departamentos (nombre) VALUES
 ON CONFLICT (nombre) DO NOTHING;
 
 -- Usuario admin (password: admin123)
--- bcrypt hash de "admin123"
+-- bcrypt hash de "admin123" (generado con bcryptjs)
 INSERT INTO usuarios (username, password_hash, rol)
-VALUES ('admin', '$2a$10$rQEY5z3Q5Y5Q5Y5Q5Y5Q5eH5eH5eH5eH5eH5eH5eH5eH5eH5eH5', 'admin')
+VALUES ('admin', '$2a$10$y6vKELeiK4bmYnEmzAPpxOXFipSCCDr7hB1Pa/5BKnYoQ7jcOSzhi', 'admin')
 ON CONFLICT (username) DO NOTHING;
 
 -- ============================================================
