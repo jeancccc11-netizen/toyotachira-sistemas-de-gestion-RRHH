@@ -37,14 +37,18 @@ CREATE TABLE IF NOT EXISTS empleados (
     tipo_tasa           VARCHAR(10),
     porcentaje_bs       DECIMAL(5,2),
     porcentaje_usd      DECIMAL(5,2),
-    grupo               VARCHAR(50),
-    email               VARCHAR(150),
-    telefono            VARCHAR(30),
-    direccion           TEXT,
-    foto_url            VARCHAR(500),
-    created_at          TIMESTAMPTZ DEFAULT NOW(),
-    updated_at          TIMESTAMPTZ DEFAULT NOW()
+    grupo               VARCHAR(50),    email          VARCHAR(150),
+    telefono       VARCHAR(30),
+    direccion      TEXT,
+    foto_url       VARCHAR(500),
+    numero_cuenta  VARCHAR(30),
+    banco          VARCHAR(50),
+    created_at     TIMESTAMPTZ DEFAULT NOW(),
+    updated_at     TIMESTAMPTZ DEFAULT NOW()
 );
+
+COMMENT ON COLUMN empleados.numero_cuenta IS 'Número de cuenta bancaria del empleado (usado en el recibo de nómina)';
+COMMENT ON COLUMN empleados.banco IS 'Banco del empleado';
 
 CREATE INDEX IF NOT EXISTS idx_emp_dept ON empleados(departamento_id);
 CREATE INDEX IF NOT EXISTS idx_emp_estado ON empleados(estado_operativo);

@@ -5,13 +5,17 @@ const blocklist = require('../config/tokenBlocklist');
 const authMiddleware = (req, res, next) => {
   const header = req.headers.authorization;
 
-  if (!header || !header.startsWith('Bearer ')) {
+  // Token por header (axios/fetch) o por query (?token=...) como respaldo:
+  // window.open / <img> / <a> no pueden enviar headers.
+  const tokenFromHeader = header && header.startsWith('Bearer ') ? header.slice(7) : '';
+  const tokenFromQuery = req.method === 'GET' && typeof req.query.token === 'string' ? req.query.token : '';
+
+  if (!tokenFromHeader && !tokenFromQuery) {
     return res.status(401).json({ error: 'Token de acceso requerido' });
   }
 
-  const token = header.split(' ')[1];
-
   try {
+    const token = tokenFromHeader || tokenFromQuery;
     const decoded = jwt.verify(token, env.jwtSecret);
     if (decoded.jti && blocklist.isRevoked(decoded.jti)) {
       return res.status(401).json({ error: 'Sesión cerrada. Inicie sesión de nuevo.' });
